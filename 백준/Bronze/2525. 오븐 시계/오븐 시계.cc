@@ -1,18 +1,14 @@
 #include <iostream>
-
 using namespace std;
 
 int main() {
-	
-	int h, m, time;
-	cin >> h;
-	cin >> m;
-	cin >> time;
+	int A;
+	int B;
+	int C;
 
-	h += (m + time) / 60;
-	m = (m + time) % 60;
+	cin >> A >> B;
+	cin >> C;
 
-	cout << h % 24 << " " << m << endl;
+	cout << (A + (B + C) / 60) % 24 << " " << (B + C) % 60 << endl;
 
-	return 0;
 }
