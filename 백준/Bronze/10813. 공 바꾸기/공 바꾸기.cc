@@ -2,35 +2,35 @@
 using namespace std;
 
 int main() {
-	
-	int n, time;
-	int first, last, temp;
-	int* basArr;
-	
-	cin >> n >> time;
-	
-	basArr = new int[n];
-	
-	for (int i = 0; i < n; i++)
-	{
-		basArr[i] = i + 1;
-	}
+	int n;
+	int times;
 
-	for (int i = 0; i < time; i++)
-	{
-		cin >> first >> last;
+	cin >> n >> times;
 
-		temp = basArr[first - 1];
-		basArr[first - 1] = basArr[last - 1];
-		basArr[last - 1] = temp;
-	}
+	int* basket = new int[n];
 
 	for (int i = 0; i < n; i++)
 	{
-		cout << basArr[i] << " ";
+		basket[i] = i + 1;
 	}
 
-	delete[] basArr;
+	int p1;
+	int p2;
+	int temp;
 
-	return 0;
+	for (int i = 0; i < times; i++)
+	{
+		cin >> p1 >> p2;
+		
+		temp = basket[p1 - 1];
+		basket[p1 - 1] = basket[p2 - 1];
+		basket[p2 - 1] = temp;
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << basket[i] << " ";
+	}
+
+	delete[] basket;
 }
