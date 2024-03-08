@@ -1,21 +1,25 @@
-# include <iostream>
+#include <iostream>
 using namespace std;
 
 int main() {
+	int n;
+	int maxNum;
 
-	int n, x;
-	int arr[10000];
-	
-	cin >> n;
-	cin >> x;
+	cin >> n >> maxNum;
+
+	int* numArr = new int[n];
 
 	for (int i = 0; i < n; i++)
 	{
-		cin >> arr[i];
-		if (arr[i] < x) {
-			cout << arr[i] << " ";
-		}
+		cin >> numArr[i];
 	}
 
-	return 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (numArr[i] < maxNum)
+		{
+			cout << numArr[i] << " ";
+		}
+	}
+	delete[] numArr;
 }
