@@ -1,26 +1,21 @@
-
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
+
         int n = sc.nextInt();
 
         for (int i = 0; i < n; i++) {
-            int rep = sc.nextInt();
-            String input = sc.next();
+            int times = sc.nextInt();
+            String s = sc.next();
 
-            char[] result = new char[input.length()];
-            input.getChars(0, input.length(), result, 0);
-
-            for (char c : result) {
-                for (int k = 0; k < rep; k++) {
-                    System.out.print(c);
+            for (int j = 0; j < s.length(); j++) {
+                for (int k = 0; k < times; k++) {
+                    System.out.print(s.charAt(j));
                 }
             }
             System.out.println();
         }
-        sc.close();
     }
 }
