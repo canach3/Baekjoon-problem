@@ -2,16 +2,17 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        int[] piece = {1, 1, 2, 2, 2, 8};
-        int[] myPiece = new int[6];
-
         Scanner sc = new Scanner(System.in);
-        for (int i = 0; i < myPiece.length; i++) {
-            myPiece[i] = sc.nextInt();
+
+        int[] blackPiece = {1, 1, 2, 2, 2, 8};
+        int[] whitePiece = new int[6];
+
+        for (int i = 0; i < whitePiece.length; i++) {
+            whitePiece[i] = sc.nextInt();
         }
 
-        for (int i = 0; i < piece.length; i++) {
-            System.out.print((piece[i] - myPiece[i]) + " ");
+        for (int i = 0; i < blackPiece.length; i++) {
+            System.out.print(blackPiece[i] - whitePiece[i] + " ");
         }
     }
 }
