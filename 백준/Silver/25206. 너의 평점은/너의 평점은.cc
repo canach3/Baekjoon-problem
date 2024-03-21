@@ -7,7 +7,6 @@ int main() {
 	string grade;
 	double totalScore = 0;
 	double totalCredit = 0;
-	int count = 20;
 
 	for (int i = 0; i < 20; i++)
 	{
