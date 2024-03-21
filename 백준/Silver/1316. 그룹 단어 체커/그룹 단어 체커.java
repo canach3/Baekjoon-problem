@@ -1,39 +1,28 @@
-
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int cnt = 0;
-        int[] alphabet = new int[26];
-        boolean isGroupWord;
         int n = sc.nextInt();
+        int count = 0;
+
 
         for (int i = 0; i < n; i++) {
-            String word = sc.next();
-            isGroupWord = true;
+            String s = sc.next();
 
-            for (int j = 0; j < 26; j++)
-                alphabet[j] = 0;
+            boolean groupWord = true;
 
-            alphabet[(int)(word.charAt(0) - 97)] = 1;
-
-            for (int j = 1; j < word.length(); j++) {
-                if (word.charAt(j) != word.charAt(j - 1)) {
-                    if (alphabet[(int)(word.charAt(j) - 97)] == 0) {
-                        alphabet[(int)(word.charAt(j) - 97)] = 1;
-                    } else {
-                        isGroupWord = false;
-                        break;
-                    }
+            for (int j = 0; j <= s.length() - 3; j++) {
+                String tempS = s.substring(j + 2);
+                if ((s.charAt(j) != s.charAt(j + 1)) && tempS.contains(s.substring(j, j + 1))) {
+                    groupWord = false;
+                    break;
                 }
             }
 
-            if (isGroupWord) {
-                cnt++;
-            }
+            if (groupWord) count++;
         }
-        System.out.println(cnt);
+        System.out.println(count);
     }
 }
