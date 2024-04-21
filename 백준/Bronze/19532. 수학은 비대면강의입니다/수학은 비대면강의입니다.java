@@ -11,18 +11,14 @@ public class Main {
         int e = sc.nextInt();
         int f = sc.nextInt();
 
-        int x = -1000;
-        int y = -1000;
-
         for (int i = -999; i <= 999; i++) {
             for (int j = -999; j <= 999; j++) {
                 if ((i * a + b * j == c) && (i * d + e * j == f)) {
-                    x = i;
-                    y = j;
+
+                    System.out.println(i + " " + j);
+                    return;
                 }
             }
         }
-
-        System.out.println(x + " " + y);
     }
 }
