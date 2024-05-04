@@ -13,10 +13,7 @@ public class Main {
         for (int i = 1; i * i <= maxN; i++) {
             if (i * i >= minN &&  i * i <= maxN) {
                 sum += i * i;
-
-                if (i * i <= minSquareN) {
-                    minSquareN = i * i;
-                }
+                minSquareN = Math.min(minSquareN, i * i);
             }
         }
 
