@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Main {
@@ -14,16 +15,20 @@ public class Main {
             arr[i][1] = sc.nextInt();
         }
 
-        Arrays.sort(arr, (e1, e2) -> {
-            if(e1[0] == e2[0]) {
-                return e1[1] - e2[1];
-            } else {
-                return e1[0] - e2[0];
-            }
-        });
-
+        Arrays.sort(arr, comparator);
+        
         for(int i = 0; i < n; i++) {
             System.out.println(arr[i][0] + " " + arr[i][1]);
         }
     }
+
+    static Comparator<int[]> comparator = new Comparator<int[]>() {
+        @Override
+        public int compare(int[] arr1, int[] arr2) {
+            if (arr1[0] == arr2[0]) {
+                return arr1[1] - arr2[1];
+            }
+            return arr1[0] - arr2[0];
+        }
+    };
 }
