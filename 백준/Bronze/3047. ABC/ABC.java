@@ -11,20 +11,16 @@ public class Main {
 
         Collections.sort(numList);
 
-        int numA = numList.get(0);
-        int numB = numList.get(1);
-        int numC = numList.get(2);
-
         sc.nextLine();
         String order = sc.nextLine();
 
         for (int i = 0; i < order.length(); i++) {
             if (order.charAt(i) == 'A') {
-                System.out.print(numA + " ");
+                System.out.print(numList.get(0) + " ");
             } else if (order.charAt(i) == 'B') {
-                System.out.print(numB + " ");
+                System.out.print(numList.get(1) + " ");
             } else {
-                System.out.print(numC + " ");
+                System.out.print(numList.get(2) + " ");
             }
         }
     }
