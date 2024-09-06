@@ -7,8 +7,6 @@ public class Main {
         int n = sc.nextInt();
         sc.nextLine();
 
-        StringBuilder sb = new StringBuilder();
-
         for(int i=0; i<n; i++)
         {
             String temp = sc.nextLine();
