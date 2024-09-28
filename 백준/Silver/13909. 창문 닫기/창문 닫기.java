@@ -8,12 +8,8 @@ public class Main {
         int n = sc.nextInt();
         int cnt = 0;
 
-        int i = 1;
-        int j = 1;
-        while (j <= n) {
+        for(int i = 1; i * i <= n; i++) {
             cnt++;
-            i++;
-            j = i * i;
         }
 
         System.out.println(cnt);
