@@ -16,16 +16,16 @@ public class Main {
         }
 
         sb.append('<');
-        
-        while (queue.size() > 1) {
+        while (!queue.isEmpty()) {
             for (int i = 0; i < k - 1; i++) {
                 queue.offer(queue.poll());
             }
 
             sb.append(queue.poll()).append(", ");
         }
+        sb.delete(sb.length()-2, sb.length());
+        sb.append('>');
 
-        sb.append(queue.poll()).append('>');
         System.out.println(sb);
     }
 }
