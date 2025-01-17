@@ -31,7 +31,7 @@ public class Main {
 
         for (int i = 0; i < M; i++) {
             if (cntArr[i] > 1) {
-                result = result + (cntArr[i] * (cntArr[i] - 1) / 2);
+                result = result + ((cntArr[i] * (cntArr[i] - 1)) / 2);
             }
         }
 
