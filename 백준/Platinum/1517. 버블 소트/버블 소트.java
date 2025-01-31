@@ -1,28 +1,34 @@
 import java.io.*;
+import java.nio.Buffer;
 import java.util.*;
 
 public class Main {
     public static long result;
-
     public static void main(String[] args) throws IOException {
+        result = 0;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
         int[] numArr = new int[N];
-        int[] temp = new int[N]; // temp 배열을 미리 생성하여 재사용
+        int[] temp = new int[N];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             numArr[i] = Integer.parseInt(st.nextToken());
         }
 
-        result = 0;
-        mergeSort(numArr, temp, 0, N - 1);
+        mergeSort(numArr, temp);
         System.out.println(result);
     }
 
+    public static void mergeSort(int[] arr, int[] temp) {
+        mergeSort(arr, temp, 0, arr.length - 1);
+    }
+
     private static void mergeSort(int[] arr, int[] temp, int start, int end) {
-        if (start >= end) return;
+        if (start >= end) {
+            return;
+        }
 
         int mid = (start + end) / 2;
         mergeSort(arr, temp, start, mid);
@@ -31,20 +37,27 @@ public class Main {
     }
 
     private static void merge(int[] arr, int[] temp, int start, int mid, int end) {
-        System.arraycopy(arr, start, temp, start, end - start + 1);
-
-        int part1 = start, part2 = mid + 1, index = start;
+        for (int i = start; i <= end; i++) {
+            temp[i] = arr[i];
+        }
+        int part1 = start;
+        int part2 = mid + 1;
+        int index = start;
 
         while (part1 <= mid && part2 <= end) {
             if (temp[part1] <= temp[part2]) {
-                arr[index++] = temp[part1++];
+                arr[index] = temp[part1];
+                part1++;
             } else {
-                result += mid - part1 + 1;
-                arr[index++] = temp[part2++];
+                result += mid + 1 - part1;
+                arr[index] = temp[part2];
+                part2++;
             }
+            index++;
         }
 
-        while (part1 <= mid) arr[index++] = temp[part1++];
-        while (part2 <= end) arr[index++] = temp[part2++];
+        for (int i = 0; i <= mid - part1; i++) {
+            arr[index + i] = temp[part1 + i];
+        }
     }
 }
