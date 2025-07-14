@@ -1,27 +1,28 @@
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        double[] scoreArr = new double[n];
-        int maxScore = 0;
-        double average = 0;
 
-        // 점수 배열
-        for (int i = 0; i < n; i++) {
-            int score = sc.nextInt();
-            scoreArr[i] = score;
-            if (maxScore < score) {
-                maxScore = score;
+        int N = sc.nextInt();
+        double[] scores = new double[N];
+        double max = 0;
+
+        for (int i = 0; i < N; i++) {
+            scores[i] = sc.nextInt();
+
+            if (scores[i] >= max) {
+                max = scores[i];
             }
         }
 
-        for (int i = 0; i < scoreArr.length; i++) {
-            scoreArr[i] = scoreArr[i] / maxScore * 100;
-            average += scoreArr[i];
+        double sum = 0;
+        for (int i = 0; i < N; i++) {
+            scores[i] = scores[i] / max * 100;
+            sum += scores[i];
         }
-        System.out.println(average / n);
+
+        System.out.println(sum / N);
     }
 }
