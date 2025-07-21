@@ -1,40 +1,45 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder();
 
         int N = sc.nextInt();
-        int[] A = new int[N];
-        for (int i = 0; i < N; i++) {
-            A[i] = sc.nextInt();
+
+        Node[] nodeArr = new Node[N+1];
+        for (int i = 1; i <= N; i++) {
+            nodeArr[i] = new Node(i, sc.nextInt());
         }
 
-        int[] result = new int[N];
-        Stack<Integer> stack = new Stack<>();
+        Deque<Node> deque = new ArrayDeque<>();
 
-        stack.push(0);
-
-        for (int i = 1; i < N; i++) {
-            if (stack.isEmpty() || A[i-1] > A[i]) {
-                stack.push(i);
-            } else {
-                while (!stack.isEmpty() && A[stack.peek()] < A[i]) {
-                    result[stack.pop()] = A[i];
-                }
-                stack.push(i);
+        for (int i = 1; i <= N; i++) {
+            while (!deque.isEmpty() && deque.peekLast().value < nodeArr[i].value) {
+                deque.pollLast().NGE = nodeArr[i].value;
             }
+            deque.addLast(nodeArr[i]);
         }
 
-        while (!stack.isEmpty()) {
-            result[stack.pop()] = -1;
+        while (!deque.isEmpty()) {
+            deque.pollLast().NGE = -1;
         }
 
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < result.length; i++) {
-            str.append(result[i]).append(" ");
+        for (int i = 1; i <= N; i++) {
+            sb.append(nodeArr[i].NGE).append(" ");
         }
 
-        System.out.println(str);
+        System.out.println(sb);
+    }
+    static class Node{
+        int index;
+        int value;
+        int NGE;
+
+        public Node(int index, int value) {
+            this.index = index;
+            this.value = value;
+        }
     }
 }
