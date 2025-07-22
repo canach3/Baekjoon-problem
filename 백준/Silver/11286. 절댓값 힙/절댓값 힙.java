@@ -3,29 +3,54 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder();
         int N = sc.nextInt();
 
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>((o1, o2) -> {
-            // 절댓값이 같은 경우 음수 우선
-            if (Math.abs(o1) == Math.abs(o2)) {
-                return o1 - o2;
-            }
-            // 절댓값이 작은 숫자 우선
-            return Math.abs(o1) - Math.abs(o2);
-        });
-        
-        for (int i = 0; i < N; i++) {
-            int input = sc.nextInt();
+        PriorityQueue<Node> minHeap = new PriorityQueue<>();
 
-            if (input != 0) {
-                minHeap.offer(input);
-            } else {
+        for (int i = 0; i < N; i++) {
+            long input = sc.nextLong();
+
+            if (input == 0) {
                 if (minHeap.isEmpty()) {
-                    System.out.println(0);
-                } else {
-                    System.out.println(minHeap.poll());
+                    sb.append(0).append("\n");
+                }else {
+                    sb.append(minHeap.poll().num).append("\n");
                 }
+                continue;
             }
+
+            minHeap.add(new Node(Math.abs(input), input));
+        }
+        System.out.println(sb);
+    }
+
+    static class Node implements Comparable<Node> {
+        long abs;
+        long num;
+
+        public Node(long abs, long num) {
+            this.abs = abs;
+            this.num = num;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            if (this.abs > o.abs) {
+                return 1;
+            }
+
+            if (this.abs < o.abs) {
+                return -1;
+            }
+
+            if (this.num > o.num) {
+                return 1;
+            }
+            if (this.num < o.num) {
+                return -1;
+            }
+            return 0;
         }
     }
 }
