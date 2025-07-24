@@ -1,22 +1,20 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder();
 
-        String str = sc.nextLine();
-        Integer[] arr = new Integer[str.length()];
+        String input = sc.nextLine();
+        char[] numArr = input.toCharArray();
 
-        for (int i = 0; i < str.length(); i++) {
-            arr[i] = str.charAt(i) - '0';
+        Arrays.sort(numArr);
+
+        for (int i = numArr.length-1; i >= 0; i--) {
+            sb.append(numArr[i]);
         }
 
-        Arrays.sort(arr, Collections.reverseOrder());
-
-        for (int n : arr) {
-            System.out.print(n);
-        }
+        System.out.println(sb);
     }
 }
