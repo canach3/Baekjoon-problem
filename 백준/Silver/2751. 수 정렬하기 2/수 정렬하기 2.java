@@ -1,23 +1,21 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         StringBuilder sb = new StringBuilder();
 
-        int n = sc.nextInt();
-        ArrayList<Integer> numList = new ArrayList<>();
+        int N = sc.nextInt();
 
-        for (int i = 0; i < n; i++) {
-            numList.add(sc.nextInt());
+        PriorityQueue<Integer> minheap = new PriorityQueue<>();
+
+        for(int i = 0; i < N; i++) {
+            minheap.add(sc.nextInt());
         }
 
-        Collections.sort(numList);
-
-        for (int value : numList) {
-            sb.append(value).append('\n');
+        for(int i = 0; i < N; i++) {
+            sb.append(minheap.poll()).append("\n");
         }
 
         System.out.println(sb);
