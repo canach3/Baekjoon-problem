@@ -1,57 +1,67 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    static boolean[] visit;
-    static boolean result = false;
-    static int totalLevel = 4;
-    static ArrayList<Integer>[] list;
+    static boolean[] visited;
+    static ArrayList<ArrayList<Integer>> people = new ArrayList<>();
+    static boolean result;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int M = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        list = new ArrayList[N];
-        visit = new boolean[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+
+        visited = new boolean[N];
 
         for (int i = 0; i < N; i++) {
-            list[i] = new ArrayList<>();
+            people.add(new ArrayList<>());
         }
 
         for (int i = 0; i < M; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
+            st = new StringTokenizer(br.readLine());
+            int p1 = Integer.parseInt(st.nextToken());
+            int p2 = Integer.parseInt(st.nextToken());
 
-            list[a].add(b);
-            list[b].add(a);
+            people.get(p1).add(p2);
+            people.get(p2).add(p1);
         }
 
+        int depth = 0;
         for (int i = 0; i < N; i++) {
-            DFS(i, 0);
+            for (int j = 0; j < N; j++) {
+                visited[j] = false;
+            }
+
+            depth = 1;
+
+            DFS(i, depth);
 
             if (result) {
                 System.out.println(1);
                 return;
             }
         }
-
         System.out.println(0);
     }
 
-    static void DFS(int num, int myLevel) {
-        if (myLevel == totalLevel) {
+    static void DFS(int person, int depth) {
+        visited[person] = true;
+
+        if (depth >= 5) {
             result = true;
             return;
         }
 
-        visit[num] = true;
+        for (int i = 0; i < people.get(person).size(); i++) {
+            int friend = people.get(person).get(i);
 
-        for (int i = 0; i < list[num].size(); i++) {
-            if (!visit[list[num].get(i)]) {
-                DFS(list[num].get(i), myLevel + 1);
+            if (!visited[friend]) {
+                DFS(friend, depth + 1);
+                visited[friend] = false;
             }
         }
-
-        visit[num] = false;
     }
 }
