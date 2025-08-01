@@ -1,54 +1,96 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
+    static Node[][] nodes;
+    static boolean[][] visited;
     static int N;
     static int M;
-    static int[][] maze;
-    static boolean[][] visited;
-    static int[] dx = {0, 1, 0, -1};
-    static int[] dy = {1, 0, -1, 0};
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = sc.nextInt();
-        M = sc.nextInt();
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        maze = new int[N][M];
-        visited = new boolean[N][M];
+        nodes = new Node[N + 2][M + 2];
+        visited = new boolean[N + 2][M + 2];
 
-        for (int i = 0; i < N; i++) {
-            String input = sc.next();
-
-            for (int j = 0; j < input.length(); j++) {
-                maze[i][j] = Integer.parseInt(input.substring(j, j + 1));
+        for (int i = 0; i <= N + 1; i++) {
+            for (int j = 0; j <= M + 1; j++) {
+                nodes[i][j] = new Node(0, j, i);
             }
         }
 
-        BFS(0, 0);
-        System.out.println(maze[N-1][M-1]);
+        for (int i = 1; i <= N; i++) {
+            String input = br.readLine();
+            char[] chars = input.toCharArray();
+
+            for (int j = 1; j <= chars.length; j++) {
+                nodes[i][j].value = chars[j - 1] - '0';
+            }
+        }
+
+        BFS(nodes[1][1]);
     }
 
-    static void BFS(int i, int j) {
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{i, j});
+    static void BFS(Node startNode) {
+        visited[startNode.y][startNode.x] = true;
+        Deque<Node> deque = new ArrayDeque<>();
+        deque.addLast(startNode);
 
-        while (!queue.isEmpty()) {
-            int[] current = queue.poll();
-            visited[i][j] = true;
+        startNode.cnt = 1;
 
-            for (int k = 0; k < 4; k++) { // 상하좌우 탐색
-                int x = current[0] + dx[k];
-                int y = current[1] + dy[k];
+        while (!deque.isEmpty()) {
+            Node currentNode = deque.removeFirst();
 
-                if (x >= 0 && y >= 0 && x < N && y < M) { // 배열을 넘어가면 안 됨
-                    if (maze[x][y] != 0 && !visited[x][y]) { // 0이거나 이미 방문했거나
-                        visited[x][y] = true;
-                        maze[x][y] = maze[current[0]][current[1]] + 1;
-                        queue.add(new int[]{x, y});
-                    }
-                }
+            if (currentNode.x == M && currentNode.y == N) {
+                System.out.println(currentNode.cnt);
+                return;
             }
+
+            Node upNode = nodes[currentNode.y-1][currentNode.x]; // 상
+            Node downNode = nodes[currentNode.y+1][currentNode.x]; // 하
+            Node leftNode = nodes[currentNode.y][currentNode.x-1]; // 좌
+            Node rightNode = nodes[currentNode.y][currentNode.x+1]; // 우
+
+            if (upNode.value == 1 && !visited[upNode.y][upNode.x]) {
+                visited[upNode.y][upNode.x] = true;
+                upNode.cnt = currentNode.cnt + 1;
+                deque.addLast(upNode);
+            }
+
+            if (downNode.value == 1 && !visited[downNode.y][downNode.x]) {
+                visited[downNode.y][downNode.x] = true;
+                downNode.cnt = currentNode.cnt + 1;
+                deque.addLast(downNode);
+            }
+
+            if (leftNode.value == 1 && !visited[leftNode.y][leftNode.x]) {
+                visited[leftNode.y][leftNode.x] = true;
+                leftNode.cnt = currentNode.cnt + 1;
+                deque.addLast(leftNode);
+            }
+
+            if (rightNode.value == 1 && !visited[rightNode.y][rightNode.x]) {
+                visited[rightNode.y][rightNode.x] = true;
+                rightNode.cnt = currentNode.cnt + 1;
+                deque.addLast(rightNode);
+            }
+        }
+    }
+
+    static class Node {
+        int value;
+        int x;
+        int y;
+        int cnt;
+
+        public Node(int value, int x, int y) {
+            this.value = value;
+            this.x = x;
+            this.y = y;
         }
     }
 }
