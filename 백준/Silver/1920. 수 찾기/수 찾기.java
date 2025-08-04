@@ -1,50 +1,58 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int N = sc.nextInt();
-        ArrayList<Integer> nList = new ArrayList<>();
+        int N = Integer.parseInt(br.readLine());
+        int[] numArr1 = new int[N];
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            nList.add(sc.nextInt());
+            numArr1[i] = Integer.parseInt(st.nextToken());
         }
 
-        int M = sc.nextInt();
-        ArrayList<Integer> mList = new ArrayList<>();
+        int M = Integer.parseInt(br.readLine());
+        int[] numArr2 = new int[M];
+
+        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < M; i++) {
-            mList.add(sc.nextInt());
+            numArr2[i] = Integer.parseInt(st.nextToken());
         }
 
-        Collections.sort(nList);
+        Arrays.sort(numArr1);
 
-        for (int i = 0; i < M; i++) {
-            int target = mList.get(i);
-            int left = 0;
-            int right = nList.size() - 1;
-            int middle = right / 2;
+        for (int findNum : numArr2) {
+            int low = 0;
+            int high = numArr1.length - 1;
+            int middle;
+            boolean find = false;
 
-            while (true) {
-                if (target == nList.get(middle)) {
+            while (low <= high) {
+                middle = low + (high - low) / 2;
+
+                if (findNum == numArr1[middle]) {
                     sb.append(1).append("\n");
+                    find = true;
                     break;
                 }
 
-                if (target > nList.get(middle)) {
-                    left = middle + 1;
-                    middle = (left + right) / 2;
-                } else {
-                    right = middle - 1;
-                    middle = (left + right) / 2;
+                if (findNum < numArr1[middle]) {
+                    high = middle - 1;
                 }
 
-                if (left > right) {
-                    sb.append(0).append("\n");
-                    break;
+                if (findNum > numArr1[middle]) {
+                    low = middle + 1;
                 }
             }
+
+            if (!find) {
+                sb.append(0).append("\n");
+            }
         }
-        System.out.print(sb);
+
+        System.out.println(sb);
     }
 }
