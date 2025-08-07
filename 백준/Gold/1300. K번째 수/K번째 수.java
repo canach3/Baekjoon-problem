@@ -1,18 +1,18 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        int K = Integer.parseInt(br.readLine());
 
-        int N = sc.nextInt();
-        int K = sc.nextInt();
-
-        long left = 1;
-        long right = K;
+        long low = 1;
+        long high = K;
         long result = 0;
 
-        while (left <= right) {
-            long middle = (left + right) / 2;
+        while (low <= high) {
+            long middle = low + (high - low) / 2;
             long cnt = 0;
 
             for (int i = 1; i <= N; i++) {
@@ -20,10 +20,12 @@ public class Main {
             }
 
             if (cnt < K) {
-                left = middle + 1;
-            } else {
+                low = middle + 1;
+            }
+
+            if (cnt >= K) {
+                high = middle - 1;
                 result = middle;
-                right = middle - 1;
             }
         }
 
