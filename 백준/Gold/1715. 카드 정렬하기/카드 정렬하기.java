@@ -1,22 +1,21 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = sc.nextInt();
+        int N = Integer.parseInt(br.readLine());
+
         PriorityQueue<Integer> minheap = new PriorityQueue<>();
 
         for (int i = 0; i < N; i++) {
-            minheap.add(sc.nextInt());
+            minheap.add(Integer.parseInt(br.readLine()));
         }
 
         int result = 0;
-
-        while (minheap.size() >= 2) {
-            int cards1 = minheap.poll();
-            int cards2 = minheap.poll();
-            int sum = cards1 + cards2;
+        while (minheap.size() > 1) {
+            int sum = minheap.remove() + minheap.remove();
             result += sum;
             minheap.add(sum);
         }
