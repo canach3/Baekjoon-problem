@@ -1,76 +1,52 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = sc.nextInt();
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-        int zeroCnt = 0;
-        int oneCnt = 0;
+        int N = Integer.parseInt(br.readLine());
+
+        PriorityQueue<Integer> minusMaxHeap = new PriorityQueue<>((o1, o2) -> o2 - o1);
+        PriorityQueue<Integer> plusMaxHeap = new PriorityQueue<>((o1, o2) -> o2 - o1);
 
         for (int i = 0; i < N; i++) {
-            int input = sc.nextInt();
+            int input = Integer.parseInt(br.readLine());
 
-            if (input == 0) {
-                zeroCnt++;
-                continue;
+            if (input <= 0) {
+                minusMaxHeap.add(Math.abs(input));
+            } else {
+                plusMaxHeap.add(input);
             }
-
-            if (input == 1) {
-                oneCnt++;
-                continue;
-            }
-
-            maxHeap.add(input);
         }
 
-        int sum = oneCnt;
-        while (true) {
-            int num1 = 0;
-            int num2 = 0;
+        int sum = 0;
 
-            if (!maxHeap.isEmpty() && maxHeap.peek() > 0) {
-                num1 = maxHeap.poll();
-            } else {
+        while (!minusMaxHeap.isEmpty()) {
+            if (minusMaxHeap.size() == 1) {
+                sum -= minusMaxHeap.remove();
                 break;
             }
 
-            if (!maxHeap.isEmpty() && maxHeap.peek() > 0) {
-                num2 = maxHeap.poll();
-            } else {
-                sum += num1;
-                break;
-            }
-
-            sum += num1 * num2;
+            int n1 = minusMaxHeap.remove();
+            int n2 = minusMaxHeap.remove();
+            sum += n1 * n2;
         }
 
-        PriorityQueue<Integer> minheap = new PriorityQueue<>();
-        minheap.addAll(maxHeap);
-
-        while (true) {
-            int num1 = 0;
-            int num2 = 0;
-
-            if (!minheap.isEmpty()) {
-                num1 = minheap.poll();
-            } else {
+        while (!plusMaxHeap.isEmpty()) {
+            if (plusMaxHeap.size() == 1) {
+                sum += plusMaxHeap.remove();
                 break;
             }
 
-            if (!minheap.isEmpty()) {
-                num2 = minheap.poll();
-            } else {
-                if (zeroCnt > 0) {
-                    break;
-                } else {
-                    sum += num1;
-                    break;
-                }
-            }
+            int n1 = plusMaxHeap.remove();
+            int n2 = plusMaxHeap.remove();
 
-            sum += num1 * num2;
+            if (n1 == 1 || n2 == 1) {
+                sum += n1 + n2;
+            } else {
+                sum += n1 * n2;
+            }
         }
 
         System.out.println(sum);
