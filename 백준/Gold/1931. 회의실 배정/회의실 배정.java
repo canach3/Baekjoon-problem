@@ -1,51 +1,60 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        PriorityQueue<Meeting> minHeap = new PriorityQueue<>();
+        int N = Integer.parseInt(br.readLine());
 
-        int N = sc.nextInt();
+        PriorityQueue<Conference> minheap = new PriorityQueue<>();
+
         for (int i = 0; i < N; i++) {
-            int start = sc.nextInt();
-            int end = sc.nextInt();
-            minHeap.add(new Meeting(start, end));
+            st = new StringTokenizer(br.readLine());
+            minheap.add(new Conference(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
         }
 
-        int cnt = 0;
-        int endTime = 0;
+        int cnt = 1;
+        long endTime = minheap.remove().end;
+        while (!minheap.isEmpty()) {
+            Conference nextConference = minheap.remove();
 
-        while (!minHeap.isEmpty()) {
-            Meeting meeting = minHeap.poll();
-
-            if (meeting.start < endTime) {
+            if (nextConference.start < endTime) {
                 continue;
             }
 
-            endTime = meeting.end;
+            endTime = nextConference.end;
             cnt++;
         }
 
         System.out.println(cnt);
     }
 
-    static class Meeting implements Comparable<Meeting> {
-        int start;
-        int end;
+    static class Conference implements Comparable<Conference> {
+        long start;
+        long end;
 
-        public Meeting(int start, int end) {
+        public Conference(long start, long end) {
             this.start = start;
             this.end = end;
         }
 
         @Override
-        public int compareTo(Meeting o) {
-            if (this.end == o.end) {
-                return this.start - o.start;
+        public int compareTo(Conference o) {
+            if (end > o.end) {
+                return 1;
             }
 
-            return this.end - o.end;
+            if (end == o.end) {
+                if (start >= o.start) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+
+            return -1;
         }
     }
 }
