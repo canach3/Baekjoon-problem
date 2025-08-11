@@ -1,37 +1,46 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String input = sc.nextLine();
+        String input = br.readLine();
 
-        // "-" 를 기준으로 구간을 나눔
-        String[] sArr = input.split("-");
+        List<Integer> operandList = new ArrayList<>();
+        ArrayList<Character> operatorList = new ArrayList<>();
 
-        int result = 0;
+        String[] operandArr = input.split("[+;-]");
+        for (int i = 0; i < operandArr.length; i++) {
+            operandList.add(Integer.parseInt(operandArr[i]));
+        }
 
-        for (int i = 0; i < sArr.length; i++) {
-            int temp = sum(sArr[i]);
+        for (int i = 0; i < input.length(); i++) {
+            char operator = input.charAt(i);
 
-            if (i == 0) {
-                result += temp;
-            } else {
-                result -= temp;
+            if (operator == '-' || operator == '+') {
+                operatorList.add(operator);
             }
         }
 
-        System.out.println(result);
-    }
+        int result = operandList.remove(0);
+        int idx = 0;
+        boolean isMinus = false;
 
-    static int sum(String s) {
-        String[] temp = s.split("[+]");
+        while (idx < operandList.size()) {
+            if (operatorList.get(idx) == '-') {
+                isMinus = true;
+            }
 
-        int sum = 0;
-        for (int i = 0; i < temp.length; i++) {
-            sum += Integer.parseInt(temp[i]);
+            if (isMinus) {
+                result -= operandList.get(idx);
+            } else {
+                result += operandList.get(idx);
+            }
+
+            idx++;
         }
 
-        return sum;
+        System.out.println(result);
     }
 }
