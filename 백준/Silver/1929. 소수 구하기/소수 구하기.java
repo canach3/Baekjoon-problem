@@ -1,33 +1,34 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
 
-        int m = sc.nextInt();
-        int n = sc.nextInt();
-        
-        for (int i = m; i <= n; i++) {
-            if (isPrime(i)) {
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+
+        for (int i = N; i <= M; i++) {
+            boolean primeNum = true;
+
+            for (int j = 2; j <= Math.sqrt(i); j++) {
+                if (i % j == 0) {
+                    primeNum = false;
+                    break;
+                }
+            }
+
+            if (i == 1) {
+                primeNum = false;
+            }
+
+            if (primeNum) {
                 sb.append(i).append("\n");
             }
         }
 
         System.out.println(sb);
-    }
-
-    static boolean isPrime(int n) {
-        if (n == 1) {
-            return false;
-        }
-
-        for (int i = 2; i <= Math.sqrt(n); i++) {
-            if (n % i == 0) {
-                return false;
-            }
-        }
-        return true;
     }
 }
