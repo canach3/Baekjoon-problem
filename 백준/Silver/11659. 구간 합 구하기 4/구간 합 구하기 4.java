@@ -1,40 +1,34 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        // O(n^2) 불가
-        
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = sc.nextInt();
-        int M = sc.nextInt();
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-        // 숫자 배열, 구간합 배열 생성, 값 집어넣기 for(N) -> O(n)
-        int[] nArray = new int[N];
-        int[] sumArray = new int[N];
+        int[] sumArr = new int[N];
+        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            nArray[i] = sc.nextInt();
-
-            if (i == 0) {
-                sumArray[i] = nArray[i];
+            if(i == 0) {
+                sumArr[i] = Integer.parseInt(st.nextToken());
             } else {
-                sumArray[i] = sumArray[i - 1] + nArray[i];
+                sumArr[i] = sumArr[i-1] + Integer.parseInt(st.nextToken());
             }
         }
 
-        // M번 구간합 구하기 for(M) -> O(n)
         for (int i = 0; i < M; i++) {
-            int start = sc.nextInt() - 1;
-            int end = sc.nextInt() - 1;
+            st = new StringTokenizer(br.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
 
-            int result = 0;
-            if (start < 1) {
-                result = sumArray[end];
+            if(start == 1) {
+                System.out.println(sumArr[end-1]);
             } else {
-                result = sumArray[end] - sumArray[start-1];
+                System.out.println(sumArr[end-1] - sumArr[start-2]);
             }
-
-            System.out.println(result);
         }
     }
 }
