@@ -2,48 +2,54 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = sc.nextInt();
+        int N = Integer.parseInt(st.nextToken());
+
         int[] numArr = new int[N];
 
+        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            numArr[i] = sc.nextInt();
+            numArr[i] = Integer.parseInt(st.nextToken());
         }
+
         Arrays.sort(numArr);
 
         int cnt = 0;
-
         for (int i = 0; i < N; i++) {
-            int start = 0;
-            int end = N-1;
+            int left = 0;
+            int right = N-1;
 
-            while (start < end) {
-                if (start == i) {
-                    start++;
+            while (left < right) {
+                if (left == i) {
+                    left++;
                     continue;
                 }
 
-                if (end == i) {
-                    end--;
+                if (right == i) {
+                    right--;
                     continue;
                 }
 
-                if (numArr[start] + numArr[end] == numArr[i]) {
+                int result = numArr[left] + numArr[right];
+
+                if (result == numArr[i]) {
                     cnt++;
                     break;
                 }
 
-                if (numArr[start] + numArr[end] < numArr[i]) {
-                    start++;
+                if (result > numArr[i]) {
+                    right--;
                 }
 
-                if (numArr[start] + numArr[end] > numArr[i]) {
-                    end--;
+                if (result < numArr[i]) {
+                    left++;
                 }
             }
         }
+
         System.out.println(cnt);
     }
 }
