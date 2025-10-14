@@ -2,36 +2,42 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = sc.nextInt();
-        int[] sumArr = new int[N+1];
+        int N = Integer.parseInt(st.nextToken());
 
-        for (int i = 1; i <= N; i++) {
-            sumArr[i] = sumArr[i - 1] + i;
+        int[] sumArr = new int[N + 1];
+        for (int i = 0; i <= N; i++) {
+            if(i == 0) {
+                sumArr[i] = 0;
+            } else {
+                sumArr[i] = sumArr[i-1] + i;
+            }
         }
 
-        int cnt = 1;
-        int high = 1;
-        int low = 0;
+        int left = 0;
+        int right = 1;
+        int cnt = 0;
 
-        while ((N > high) && (N > low)) {
-            if (low >= high) {
-                break;
-            }
+        while(left < right && right <= N) {
+            int result = sumArr[right] - sumArr[left];
 
-            if (sumArr[high] - sumArr[low] == N) {
+            if (result == N) {
                 cnt++;
-                high++;
+                right++;
+                continue;
             }
 
-            if ((sumArr[high] - sumArr[low]) < N) {
-                high++;
+            if (result < N) {
+                right++;
+                continue;
             }
 
-            if ((sumArr[high] - sumArr[low]) > N) {
-                low++;
+            if (result > N) {
+                left++;
+                continue;
             }
         }
 
