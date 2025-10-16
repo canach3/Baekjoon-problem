@@ -2,54 +2,41 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int N = sc.nextInt();
-        int[] seq = new int[N];
+        int n = Integer.parseInt(br.readLine());
+        int[] sequence = new int[n];
 
-        for (int i = 0; i < N; i++) {
-            seq[i] = sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            sequence[i] = Integer.parseInt(br.readLine());
         }
 
-        Deque<Integer> stack = new ArrayDeque<>();
-        int maxPushNum = 0;
+        Deque<Integer> deque = new ArrayDeque<>();
 
-        // 처음 스택에 집어넣기
-        for (int i = 1; i <= seq[0]; i++) {
-            stack.push(i);
-            maxPushNum = i;
-            sb.append("+").append("\n");
-        }
-
-        stack.pollFirst();
-        sb.append("-").append("\n");
-
-        for (int i = 1; i < N; i++) {
-
-            if (stack.isEmpty() || seq[i] > stack.peekFirst()) {
-                for (int j = maxPushNum + 1; j <= seq[i]; j++) {
-                    stack.push(j);
-                    sb.append("+").append("\n");
-                }
-                maxPushNum = seq[i];
-                stack.pollFirst();
-                sb.append("-").append("\n");
-                continue;
-            }
-
-            if (seq[i] < stack.peekFirst()) {
+        int i = 0;
+        int j = 1;
+        while (i < n) {
+            if (deque.isEmpty() || deque.peekLast() < sequence[i]) {
+                deque.addLast(j);
+                sb.append("+").append("\n");
+                j++;
+            } else if (deque.peekLast() > sequence[i]) {
                 System.out.println("NO");
                 return;
-            }
-
-            if (seq[i] == stack.peekFirst()) {
-                stack.pollFirst();
+            } else {
+                deque.removeLast();
                 sb.append("-").append("\n");
-                continue;
+                i++;
             }
         }
+
+        while(!deque.isEmpty()) {
+            deque.pop();
+            sb.append("-").append("\n");
+        }
+
         System.out.println(sb);
     }
 }
