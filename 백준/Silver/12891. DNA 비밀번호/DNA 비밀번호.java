@@ -2,81 +2,83 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int S = sc.nextInt();
-        int P = sc.nextInt();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int S = Integer.parseInt(st.nextToken());
+        int P = Integer.parseInt(st.nextToken());
 
-        sc.nextLine();
-        String DNAStr = sc.nextLine();
-        char[] DNAArray = DNAStr.toCharArray();   
+        String DNA = br.readLine();
 
-        int[] ACGTCheck = new int[4];
+        int[] ACGTStandard = new int[4];
+        int[] ACGTInput = new int[4];
+
+        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < 4; i++) {
-            ACGTCheck[i] = sc.nextInt();
+            ACGTStandard[i] = Integer.parseInt(st.nextToken());
         }
 
-        int[] ACGT = new int[4];
         for (int i = 0; i < P; i++) {
-            if (DNAArray[i] == 'A') {
-                ACGT[0]++;
+            if (DNA.charAt(i) == 'A') {
+                ACGTInput[0]++;
             }
-
-            if (DNAArray[i] == 'C') {
-                ACGT[1]++;
+            if (DNA.charAt(i) == 'C') {
+                ACGTInput[1]++;
             }
-
-            if (DNAArray[i] == 'G') {
-                ACGT[2]++;
+            if (DNA.charAt(i) == 'G') {
+                ACGTInput[2]++;
             }
-
-            if (DNAArray[i] == 'T') {
-                ACGT[3]++;
+            if (DNA.charAt(i) == 'T') {
+                ACGTInput[3]++;
             }
         }
-        
-        int cnt = 0;
-        int start = 0;
-        int end = P - 1;
 
-        while (end < S) {
-            if ((ACGT[0] >= ACGTCheck[0]) && (ACGT[1] >= ACGTCheck[1]) && (ACGT[2] >= ACGTCheck[2]) && (ACGT[3] >= ACGTCheck[3])) {
+        int left = 0;
+        int right = P - 1;
+        int cnt = 0;
+
+        if (ACGTInput[0] >= ACGTStandard[0] && ACGTInput[1] >= ACGTStandard[1] &&
+            ACGTInput[2] >= ACGTStandard[2] && ACGTInput[3] >= ACGTStandard[3]) {
+            cnt++;
+        }
+
+        while (right < S - 1) {
+            left++;
+            right++;
+
+            if (DNA.charAt(left-1) == 'A') {
+                ACGTInput[0]--;
+            }
+            if (DNA.charAt(left-1) == 'C') {
+                ACGTInput[1]--;
+            }
+            if (DNA.charAt(left-1) == 'G') {
+                ACGTInput[2]--;
+            }
+            if (DNA.charAt(left-1) == 'T') {
+                ACGTInput[3]--;
+            }
+
+            if (DNA.charAt(right) == 'A') {
+                ACGTInput[0]++;
+            }
+            if (DNA.charAt(right) == 'C') {
+                ACGTInput[1]++;
+            }
+            if (DNA.charAt(right) == 'G') {
+                ACGTInput[2]++;
+            }
+            if (DNA.charAt(right) == 'T') {
+                ACGTInput[3]++;
+            }
+
+            if (ACGTInput[0] >= ACGTStandard[0] && ACGTInput[1] >= ACGTStandard[1] &&
+                ACGTInput[2] >= ACGTStandard[2] && ACGTInput[3] >= ACGTStandard[3]) {
                 cnt++;
             }
-
-            if (DNAArray[start] == 'A') {
-                ACGT[0]--;
-            }
-            if (DNAArray[start] == 'C') {
-                ACGT[1]--;
-            }
-            if (DNAArray[start] == 'G') {
-                ACGT[2]--;
-            }
-            if (DNAArray[start] == 'T') {
-                ACGT[3]--;
-            }
-            start++;
-            end++;
-
-            if (end >= S) {
-                break;
-            }
-
-            if (DNAArray[end] == 'A') {
-                ACGT[0]++;
-            }
-            if (DNAArray[end] == 'C') {
-                ACGT[1]++;
-            }
-            if (DNAArray[end] == 'G') {
-                ACGT[2]++;
-            }
-            if (DNAArray[end] == 'T') {
-                ACGT[3]++;
-            }
         }
+
         System.out.println(cnt);
     }
 }
