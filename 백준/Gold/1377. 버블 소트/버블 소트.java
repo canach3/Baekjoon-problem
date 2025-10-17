@@ -3,41 +3,49 @@ import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = Integer.parseInt(reader.readLine());
-        Node[] nodeArr = new Node[N];
+        int N = Integer.parseInt(br.readLine());
 
-        for (int i = 0; i < N; i++) {
-            nodeArr[i] = new Node(i, Integer.parseInt(reader.readLine()));
+        Node[] nodes = new Node[N];
+        for(int i = 0; i < N; i++) {
+            nodes[i] = new Node();
+            nodes[i].firstIdx = i;
+            nodes[i].value = Integer.parseInt(br.readLine());
         }
-        
-        Arrays.sort(nodeArr);
-        
-        int max = 0;
 
+        Arrays.sort(nodes);
+
+        for(int i = 0; i < N; i++) {
+            nodes[i].lastIdx = i;
+        }
+
+        int max = 0;
         for (int i = 0; i < N; i++) {
-            int interval = nodeArr[i].index - i;
-            if (interval > max) {
-                max = interval;
+            int cnt = nodes[i].firstIdx - nodes[i].lastIdx + 1;
+
+            if (cnt > max) {
+                max = cnt;
             }
         }
 
-        System.out.println(max + 1);
+        System.out.println(max);
     }
-    
-    static class Node implements Comparable<Node> {
-        int index;
-        int value;
 
-        public Node(int index, int value) {
-            this.index = index;
-            this.value = value;
-        }
+    static class Node implements Comparable<Node>{
+        int value;
+        int firstIdx;
+        int lastIdx;
 
         @Override
         public int compareTo(Node o) {
-            return this.value - o.value;
+            if (this.value > o.value) {
+                return 1;
+            }
+            if (this.value < o.value) {
+                return -1;
+            }
+            return 0;
         }
     }
 }
