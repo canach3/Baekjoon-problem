@@ -1,40 +1,37 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        // N, M 입력 받기
-        int N = sc.nextInt();
-        int M = sc.nextInt();
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-
-        // N 크기 구간합 배열 생성, 값 집어넣기
-        long[] sumArr = new long[N];
-        sumArr[0] = sc.nextInt();
-        for (int i = 1; i < N; i++) {
-            sumArr[i] = sumArr[i - 1] + sc.nextInt();
+        long[] sumArr = new long[N + 1];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 1; i <= N; i++) {
+            sumArr[i] = sumArr[i - 1] + Integer.parseInt(st.nextToken());
         }
 
-        // 같은 나머지의 인덱스를 카운트하는 배열 생성
-        long[] cntArr = new long[M];
-        long result = 0;
+        long cnt = 0;
 
-        for (int i = 0; i < N; i++) {
-            int remainder = (int) (sumArr[i] % M);
-            if (remainder == 0) {
-                result++;
+        long[] remainCntArr = new long[M];
+        for (int i = 1; i <= N; i++) {
+            int remain = (int) (sumArr[i] % M);
+
+            if (remain == 0) {
+                cnt++;
             }
 
-            cntArr[remainder]++;
+            remainCntArr[remain]++;
         }
 
         for (int i = 0; i < M; i++) {
-            if (cntArr[i] > 1) {
-                result = result + ((cntArr[i] * (cntArr[i] - 1)) / 2);
-            }
+            cnt += ((remainCntArr[i] - 1) * (remainCntArr[i])) / 2;
         }
 
-        System.out.println(result);
+        System.out.println(cnt);
     }
 }
