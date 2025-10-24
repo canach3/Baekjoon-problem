@@ -23,21 +23,15 @@ public class Main {
         sb.append(numArr[1]).append(" ");
 
         for (int i = 2; i <= N; i++) {
-            // deque 최신화
             if (nodeDeque.peekFirst().index < i - L + 1) {
                 nodeDeque.removeFirst();
             }
 
-            if (nodeDeque.isEmpty() || nodeDeque.peekLast().value <= numArr[i]) {
-                nodeDeque.addLast(new Node(numArr[i], i));
-            } else {
-                while(!nodeDeque.isEmpty() && nodeDeque.peekLast().value > numArr[i]) {
-                    nodeDeque.removeLast();
-                }
-
-                nodeDeque.addLast(new Node(numArr[i], i));
+            while(!nodeDeque.isEmpty() && nodeDeque.peekLast().value > numArr[i]) {
+                nodeDeque.removeLast();
             }
 
+            nodeDeque.addLast(new Node(numArr[i], i));
             sb.append(nodeDeque.peekFirst().value).append(" ");
         }
 
