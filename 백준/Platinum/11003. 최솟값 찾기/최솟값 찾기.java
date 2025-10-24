@@ -5,42 +5,52 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         int N = Integer.parseInt(st.nextToken());
         int L = Integer.parseInt(st.nextToken());
 
+        int[] numArr = new int[N + 1];
+
         st = new StringTokenizer(br.readLine());
-        
-        Node[] nodeArr = new Node[N+1];
         for (int i = 1; i <= N; i++) {
-            nodeArr[i] = new Node();
-            nodeArr[i].index = i;
-            nodeArr[i].value = Integer.parseInt(st.nextToken());
+            numArr[i] = Integer.parseInt(st.nextToken());
         }
 
-        Deque<Node> deque = new ArrayDeque<>();
-        deque.push(nodeArr[1]);
-        sb.append(nodeArr[1].value).append(" ");
+        Deque<Node> nodeDeque = new ArrayDeque<>();
+
+        nodeDeque.add(new Node(numArr[1], 1));
+        sb.append(numArr[1]).append(" ");
 
         for (int i = 2; i <= N; i++) {
-            if (i - L + 1 > deque.peekFirst().index) {
-                deque.pollFirst();
+            // deque 최신화
+            if (nodeDeque.peekFirst().index < i - L + 1) {
+                nodeDeque.removeFirst();
             }
 
-            while (!deque.isEmpty() && deque.peekLast().value > nodeArr[i].value) {
-                deque.pollLast();
+            if (nodeDeque.isEmpty() || nodeDeque.peekLast().value <= numArr[i]) {
+                nodeDeque.addLast(new Node(numArr[i], i));
+            } else {
+                while(!nodeDeque.isEmpty() && nodeDeque.peekLast().value > numArr[i]) {
+                    nodeDeque.removeLast();
+                }
+
+                nodeDeque.addLast(new Node(numArr[i], i));
             }
 
-            deque.addLast(nodeArr[i]);
-            sb.append(deque.peekFirst().value).append(" ");
+            sb.append(nodeDeque.peekFirst().value).append(" ");
         }
 
         System.out.println(sb);
     }
 
-    static class Node{
-        int index;
+    static class Node {
         int value;
+        int index;
+
+        Node(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
     }
 }
