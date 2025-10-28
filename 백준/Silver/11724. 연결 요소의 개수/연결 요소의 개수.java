@@ -1,11 +1,10 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    static ArrayList<ArrayList<Integer>> nodes;
-    static boolean[] visit;
+    static boolean[] visited;
+    static List<Integer>[] adjList;
+    static int cnt;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,40 +12,40 @@ public class Main {
 
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        visit = new boolean[N + 1];
 
-        nodes = new ArrayList<>();
+        visited = new boolean[N + 1];
+
+        adjList = new List[N + 1];
         for (int i = 0; i <= N; i++) {
-            nodes.add(new ArrayList<>());
+            adjList[i] = new ArrayList<>();
         }
 
-        for (int i = 0; i < M; i++) {
+        for(int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int startNode = Integer.parseInt(st.nextToken());
-            int endNode = Integer.parseInt(st.nextToken());
+            int vertex1 = Integer.parseInt(st.nextToken());
+            int vertex2 = Integer.parseInt(st.nextToken());
 
-            nodes.get(startNode).add(endNode);
-            nodes.get(endNode).add(startNode);
+            adjList[vertex1].add(vertex2);
+            adjList[vertex2].add(vertex1);
         }
 
-        int cnt = 0;
         for (int i = 1; i <= N; i++) {
-            if (!visit[i]) {
+            if (!visited[i]) {
                 cnt++;
                 DFS(i);
             }
         }
 
+
         System.out.println(cnt);
     }
 
-    static void DFS(int node) {
-        visit[node] = true;
+    static void DFS(int start) {
+        visited[start] = true;
 
-        for (int i = 0; i < nodes.get(node).size(); i++) {
-            int adjNode = nodes.get(node).get(i);
-            if (!visit[adjNode]) {
-                DFS(adjNode);
+        for (int next : adjList[start]) {
+            if (!visited[next]) {
+                DFS(next);
             }
         }
     }
