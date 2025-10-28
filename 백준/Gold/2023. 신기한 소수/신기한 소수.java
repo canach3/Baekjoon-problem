@@ -2,49 +2,44 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static int N;
     static StringBuilder sb;
+    static int N;
 
     public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sb = new StringBuilder();
 
-        N = sc.nextInt();
+        N = Integer.parseInt(br.readLine());
 
-        for (int i = 2; i <= 9; i++) {
-            int digit = 1;
-
-            if (i == 2 || i == 3 || i == 5 || i == 7) {
-                DFS(i, digit);
-            }
-        }
+        DFS(2, 1);
+        DFS(3, 1);
+        DFS(5, 1);
+        DFS(7, 1);
 
         System.out.println(sb);
     }
 
-    static void DFS(int i, int digit) {
-        if (digit >= N) {
-            sb.append(i).append("\n");
+    static void DFS(int num, int digit) {
+        if (digit > N) {
             return;
         }
 
-        digit++;
-
-        for (int j = 1; j <= 9; j++) {
-            int num = i * 10 + j;
-
-            if(isPrime(num)) {
-                DFS(num, digit);
+        boolean isPrime = true;
+        for (int i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i == 0) {
+                isPrime = false;
+                break;
             }
         }
-    }
 
-    static boolean isPrime(int i) {
-        for (int j = 2; j <= Math.sqrt(i); j++) {
-            if (i % j == 0) {
-                return false;
+        if (isPrime) {
+            if (digit == N) {
+                sb.append(num).append("\n");
+            }
+
+            for (int i = 1; i <= 9; i++) {
+                DFS((num * 10) + i, digit + 1);
             }
         }
-        return true;
     }
 }
