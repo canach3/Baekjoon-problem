@@ -1,68 +1,70 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
-
-    static ArrayList<Node>[] trees;
+    static List<Node>[] adjList;
     static boolean[] visited;
-    static int max = 0;
-    static int node;
+    static int farthestNode = 1;
+    static int maxDistance = 0;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int V = sc.nextInt();
-        trees = new ArrayList[V + 1];
+        int V = Integer.parseInt(st.nextToken());
         visited = new boolean[V + 1];
-
+        adjList = new List[V + 1];
         for (int i = 0; i < V + 1; i++) {
-            trees[i] = new ArrayList<>();
+            adjList[i] = new ArrayList<>();
         }
 
-        for (int i = 0; i < V; i++) {
-            int from = sc.nextInt();
+        for (int i = 1; i < V + 1; i++) {
+            st = new StringTokenizer(br.readLine());
+            int start = Integer.parseInt(st.nextToken());
 
-            while (true) {
-                int to = sc.nextInt();
-                if (to == -1) {
+            while(true) {
+                int end = Integer.parseInt(st.nextToken());
+                if (end == -1) {
                     break;
                 }
+                int length = Integer.parseInt(st.nextToken());
 
-                int length = sc.nextInt();
-                trees[from].add(new Node(to, length));
+                adjList[start].add(new Node(end, length));
+                adjList[end].add(new Node(start, length));
             }
         }
 
-        dfs(1, 0);
-
-        //node에서 부터 가장 먼 노트까지의 거리를 구한다.
+        DFS(1, 0);
         visited = new boolean[V + 1];
-        dfs(node, 0);
+        DFS(farthestNode, 0);
 
-        System.out.println(max);
+        System.out.println(maxDistance);
     }
 
-    public static void dfs(int x, int len) {
-        if(len > max) {
-            max = len;
-            node = x;
-        }
-        visited[x] = true;
+    static void DFS(int start, int distance) {
+        visited[start] = true;
 
-        for(int i = 0; i < trees[x].size(); i++) {
-            Node n = trees[x].get(i);
-            if(!visited[n.e]) {
-                dfs(n.e, n.length + len);
-                visited[n.e] = true;
+        if (distance > maxDistance) {
+            maxDistance = distance;
+            farthestNode = start;
+        }
+
+        for (int i = 0; i < adjList[start].size(); i++) {
+            Node next = adjList[start].get(i);
+
+            if (!visited[next.num]) {
+                DFS(next.num, distance + next.length);
             }
         }
     }
-}
-class Node {
-    int e;
-    int length;
 
-    public Node(int e, int length) {
-        this.e = e;
-        this.length = length;
+    static class Node {
+        int num;
+        int length;
+
+        Node(int num, int length) {
+            this.num = num;
+            this.length = length;
+        }
     }
 }
