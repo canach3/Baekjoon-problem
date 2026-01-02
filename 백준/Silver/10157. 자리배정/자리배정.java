@@ -16,7 +16,7 @@ public class Main {
 		int order = 1;
 		int current = 4;
 		
-		while (x >= 0 && x <= C - 1 && y >= 0 && y <= R-1 && map[y][x] == 0) {
+		while (map[y][x] == 0) {
 			map[y][x] = order++;
 			
 			if (current == 4) {
