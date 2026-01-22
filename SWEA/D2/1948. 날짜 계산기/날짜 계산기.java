@@ -4,6 +4,7 @@ import java.util.*;
 public class Solution {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
         int T = Integer.parseInt(br.readLine());
         for (int testCase = 1; testCase <= T; testCase++) {
@@ -22,7 +23,8 @@ public class Solution {
 
             int result = sumArr[month2 - 1] + day2 - sumArr[month1 - 1] - day1 + 1;
 
-            System.out.println("#" + testCase + " " + result);
+            sb.append("#" + testCase + " " + result + "\n");
         }
+        System.out.println(sb);
     }
 }
