@@ -2,37 +2,28 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
-    public static void main(String[] args) throws IOException {
-//        System.setIn(new FileInputStream("res/input.txt"));
-
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         int T = Integer.parseInt(br.readLine());
 
         for (int testCase = 1; testCase <= T; testCase++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
 
+            int min = 10000;
             int max = 0;
-            int min = Integer.MAX_VALUE;
-            double sum = 0;
+            int sum = 0;
 
             for (int i = 0; i < 10; i++) {
-                int N = Integer.parseInt(st.nextToken());
-
-                if (N > max) {
-                    max = N;
-                }
-
-                if (N < min) {
-                    min = N;
-                }
-
-                sum += N;
+                int input = Integer.parseInt(st.nextToken());
+                sum += input;
+                max = Math.max(input, max);
+                min = Math.min(input, min);
             }
 
             sum = sum - max - min;
 
-            System.out.println("#" + testCase + " " + Math.round(sum  / 8));
+
+            System.out.println("#" + testCase + " " + Math.round((double) sum / 8));
         }
     }
 }
