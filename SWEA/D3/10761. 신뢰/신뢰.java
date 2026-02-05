@@ -33,7 +33,7 @@ public class Solution {
                 int turn = turns.peekLast();
                 time++;
 
-                if (turn == 0) { // 오렌지 턴
+                if (turn == 0) {
                     if (oIdx == orange.peekLast()) {
                         orange.pollLast();
                         turns.pollLast();
@@ -44,7 +44,7 @@ public class Solution {
                     if (!blue.isEmpty() && bIdx != blue.peekLast()) bIdx += blue.peekLast() > bIdx ? 1 : -1;
                 }
 
-                if (turn == 1) { // 블루 턴
+                if (turn == 1) {
                     if (bIdx == blue.peekLast()) {
                         blue.pollLast();
                         turns.pollLast();
