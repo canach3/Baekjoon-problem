@@ -1,13 +1,12 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    static StringBuilder sb;
-    static List<Integer>[] adjList;
+    static StringBuilder sb = new StringBuilder();
+    static List<ArrayList<Integer>> adjList;
     static boolean[] visited;
 
-    public static void main(String[] args) throws IOException {
-        sb = new StringBuilder();
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -15,28 +14,28 @@ public class Main {
         int M = Integer.parseInt(st.nextToken());
         int V = Integer.parseInt(st.nextToken());
 
-        visited = new boolean[N + 1];
-
-        adjList = new List[N + 1];
-        for (int i = 0; i < N + 1; i++) {
-            adjList[i] = new ArrayList<>();
+        adjList = new ArrayList<>();
+        for (int i = 0; i <= N; i++) {
+            adjList.add(new ArrayList<>());
         }
 
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int v1 = Integer.parseInt(st.nextToken());
-            int v2 = Integer.parseInt(st.nextToken());
-
-            adjList[v1].add(v2);
-            adjList[v2].add(v1);
+            int node1 = Integer.parseInt(st.nextToken());
+            int node2 = Integer.parseInt(st.nextToken());
+            adjList.get(node1).add(node2);
+            adjList.get(node2).add(node1);
         }
 
-        for (int i = 1; i < N + 1; i++) {
-            Collections.sort(adjList[i]);
+        for (int i = 0; i <= N; i++) {
+            Collections.sort(adjList.get(i));
         }
 
+        visited = new boolean[N + 1];
         DFS(V);
+
         sb.append("\n");
+
         visited = new boolean[N + 1];
         BFS(V);
 
@@ -47,8 +46,8 @@ public class Main {
         visited[current] = true;
         sb.append(current).append(" ");
 
-        for (int i = 0; i < adjList[current].size(); i++) {
-            int next = adjList[current].get(i);
+        for (int i = 0; i < adjList.get(current).size(); i++) {
+            int next = adjList.get(current).get(i);
 
             if (!visited[next]) {
                 DFS(next);
@@ -56,21 +55,29 @@ public class Main {
         }
     }
 
-    static void BFS(int start) {
-        Deque<Integer> deque = new ArrayDeque<>();
-        deque.addFirst(start);
+    static void BFS(int current) {
+        visited[current] = true;
+        sb.append(current).append(" ");
 
-        while (!deque.isEmpty()) {
-            int current = deque.removeLast();
-            visited[current] = true;
-            sb.append(current).append(" ");
+        Queue<Integer> queue = new LinkedList<>();
 
-            for (int i = 0; i < adjList[current].size(); i++) {
-                int next = adjList[current].get(i);
+        for (int i = 0; i < adjList.get(current).size(); i++) {
+            int adjNode = adjList.get(current).get(i);
+            queue.add(adjNode);
+            visited[adjNode] = true;
+        }
 
-                if (!visited[next]) {
-                    deque.addFirst(next);
-                    visited[next] = true;
+        while(!queue.isEmpty()) {
+            int next = queue.poll();
+
+            sb.append(next).append(" ");
+
+            for (int i = 0; i < adjList.get(next).size(); i++) {
+                int adjNode = adjList.get(next).get(i);
+
+                if (!visited[adjNode]) {
+                    queue.add(adjNode);
+                    visited[adjNode] = true;
                 }
             }
         }
