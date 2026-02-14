@@ -4,6 +4,7 @@ import java.util.*;
 public class Solution {
 	static int N;
 	static int[] operands;
+	static int[] operators;
 	static int max;
 	static int min;
 	
@@ -18,7 +19,7 @@ public class Solution {
 			N = Integer.parseInt(br.readLine().trim());
 			
 			operands = new int[N];
-			int[] operators = new int[4];
+			operators = new int[4];
 			
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			for (int i = 0; i < 4; i++) {
@@ -33,15 +34,7 @@ public class Solution {
 			max = Integer.MIN_VALUE;
 			min = Integer.MAX_VALUE;
 			
-			for (int i = 0; i < 4; i++) {
-				if (operators[i] != 0) {
-					int[] tmpOperators = new int[4];
-					tmpOperators = Arrays.copyOf(operators, 4);
-					tmpOperators[i]--;
-					
-					DFS(tmpOperators, operands[0], i, 1);
-				}
-			}
+			DFS(1, operands[0]);
 			
 			sb.append(max - min).append("\n");
 		}
@@ -49,36 +42,34 @@ public class Solution {
 		System.out.print(sb);
 	}
 	
-	static void DFS(int[] operators, int result, int operator, int next) {
-		switch (operator) {
-			case 0:
-				result += operands[next];
-				break;
-			case 1:
-				result -= operands[next];
-				break;
-			case 2:
-				result *= operands[next];
-				break;
-			case 3:
-				result /= operands[next];
-				break;
-		}
-		
-		if (next >= N - 1) {
-			if (result < min) min = result;
-			if (result > max) max = result;
-			return;
-		}
+	static void DFS(int idx, int result) {
+		if (idx == N) {
+            max = Math.max(max, result);
+            min = Math.min(min, result);
+            return;
+        }
 		
 		for (int i = 0; i < 4; i++) {
-			if (operators[i] != 0) {
-				int[] tmpOperators = new int[4];
-				tmpOperators = Arrays.copyOf(operators, 4);
-				tmpOperators[i]--;
-				
-				DFS(tmpOperators, result, i, next + 1);
-			}
-		}
+            if (operators[i] > 0) {
+                operators[i]--;
+
+                switch (i) {
+                    case 0:
+                    	DFS(idx + 1, result + operands[idx]);
+                        break;
+                    case 1:
+                    	DFS(idx + 1, result - operands[idx]);
+                        break;
+                    case 2:
+                    	DFS(idx + 1, result * operands[idx]);
+                        break;
+                    case 3:
+                    	DFS(idx + 1, result / operands[idx]);
+                        break;
+                }
+
+                operators[i]++;
+            }
+        }
 	}
 }
