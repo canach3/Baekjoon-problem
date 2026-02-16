@@ -21,41 +21,9 @@ public class Solution {
 			
 			for (int i = 0; i < N; i++) {
 				String tmp = input.substring(i, i + (N / 4));
+				long num = Long.parseLong(tmp, 16);
 				
-				long sum = 0;
-				
-				for (int j = 0; j < N / 4; j++) {
-					char c = tmp.charAt(j);
-					long num = 0;
-					
-					switch (c) {
-						case 'F':
-							num = (long) (15 * Math.pow(16, N/4 - 1 - j));
-							break;
-						case 'E':
-							num = (long) (14 * Math.pow(16, N/4 - 1 - j));
-							break;
-						case 'D':
-							num = (long) (13 * Math.pow(16, N/4 - 1 - j));
-							break;
-						case 'C':
-							num = (long) (12 * Math.pow(16, N/4 - 1 - j));
-							break;
-						case 'B':
-							num = (long) (11 * Math.pow(16, N/4 - 1 - j));
-							break;
-						case 'A':
-							num = (long) (10 * Math.pow(16, N/4 - 1 - j));
-							break;
-						default:
-							num = (long) ((c - '0') * Math.pow(16, N/4 - 1 - j));
-							break;
-					}
-					
-					sum += num;
-				}
-				
-				set.add(sum);
+				set.add(num);
 			}
 			
 			List<Long> list = new ArrayList<>(set);
