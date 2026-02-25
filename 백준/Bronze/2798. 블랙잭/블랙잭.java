@@ -1,36 +1,44 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
-		
-		int[] arr = new int[N];
-		
-		st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < N; i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
-		}
-		
-		Arrays.sort(arr);
-		
-		int result = 0;
-		for (int i = 0; i < N - 2; i++) {
-			for (int j = i + 1; j < N - 1; j++) {
-				for (int k = j + 1; k < N; k++) {
-					if (arr[i] + arr[j] + arr[k] > M) {
-						break;
-					}
-					
-					result = Math.max(result, arr[i] + arr[j] + arr[k]);
-				}
-			}
-		}
-		
-		System.out.println(result);
-	}
+    static int N;
+    static int M;
+    static int[] cards;
+    static int max;
+
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        cards = new int[N];
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            cards[i] = Integer.parseInt(st.nextToken());
+        }
+
+        max = 0;
+        DFS(0, 0, 0);
+
+        System.out.println(max);
+    }
+
+    static void DFS(int idx, int cnt, int sum) {
+        if (cnt == 3) {
+            if (sum <= M) {
+                max = Math.max(max, sum);
+            }
+
+            return;
+        }
+
+        if (idx >= N) return;
+
+        DFS(idx + 1, cnt, sum);
+        DFS(idx + 1, cnt + 1, sum + cards[idx]);
+    }
 }
