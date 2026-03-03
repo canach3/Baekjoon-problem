@@ -50,6 +50,10 @@ public class Solution {
 	}
 	
 	static void perm(int idx, int sum, int previousX, int previousY) {
+		if (sum > min) {
+			return;
+		}
+		
 		if (idx == N) {
 			sum += Math.abs(previousX - home[0]) + Math.abs(previousY - home[1]);
 			min = Math.min(min, sum);
