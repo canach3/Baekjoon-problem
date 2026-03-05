@@ -32,6 +32,7 @@ public class Solution {
 				long sum = 0;
 				for (int i = 0; i < N; i++) {
 					sum += mid / checkTime[i];
+					if (sum >= M) break;
 				}
 				
 				if (sum >= M) {
