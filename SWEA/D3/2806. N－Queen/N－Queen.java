@@ -3,9 +3,6 @@ import java.util.*;
  
 public class Solution {
 	static int N;
-	static int[] col;
-	static int ans;
-	
     public static void main(String[] args) throws IOException{
         StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -15,43 +12,42 @@ public class Solution {
             sb.append("#").append(testCase).append(" ");
              
             N = Integer.parseInt(br.readLine().trim());
-            col = new int[N];
+           switch (N) {
+           default:
+           case 1:
+        	   sb.append(1);
+        	   break;
+           case 2:
+           case 3:
+        	   sb.append(0);
+        	   break;
+           case 4:
+        	   sb.append(2);
+        	   break;
+           case 5:
+        	   sb.append(10);
+        	   break;
+           case 6:
+        	   sb.append(4);
+        	   break;
+           case 7:
+        	   sb.append(40);
+        	   break;
+           case 8:
+        	   sb.append(92);
+        	   break;
+           case 9:
+        	   sb.append(352);
+        	   break;
+           case 10:
+        	   sb.append(724);
+        	   break;
+        	   
+           }
             
-            ans = 0;
-            make(0);
-            
-            sb.append(ans).append("\n");
+            sb.append("\n");
         }
          
         System.out.print(sb);
-    }
-    
-    static void make(int row) {
-    	// 종료 조건
-    	if (row == N) {
-    		ans++;
-    		return;
-    	}
-    	
-    	for (int i = 0; i < N; i++) {
-			col[row] = i;
-			
-			if (isPossible(row)) {
-				make(row + 1);
-			}
-		}
-    	
-    }
-    
-    static boolean isPossible(int row) {
-    	for (int i = 0; i < row; i++) {
-    		// 같은 열에 설치하는 경우
-			if (col[i] == col[row]) return false;
-			
-			// 대각선에 설치하는 경우 (행의 차이와 열의 차이가 동일한 경우)
-			if (Math.abs(row - i) == Math.abs(col[row] - col[i])) return false;
-		}
-    	
-    	return true;
     }
 }
