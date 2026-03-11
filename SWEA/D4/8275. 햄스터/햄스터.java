@@ -100,7 +100,6 @@ public class Solution {
 			max = sumArr[N];
 			result = Arrays.copyOf(arr, N + 1);
 			return;
-			
 		}
 		
 		for (int i = 0; i <= X; i++) {
