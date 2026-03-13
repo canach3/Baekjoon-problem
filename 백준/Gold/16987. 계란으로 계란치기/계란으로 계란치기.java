@@ -25,13 +25,6 @@ public class Main {
     }
 
     static void DFS(int idx) {
-        // pruning
-//        int broken = 0;
-//        for (int i = 0; i < N; i++) {
-//            if (eggs[i][0] <= 0) broken++;
-//        }
-//        if ((N - idx + 1) + broken <= max) return;
-
         // 종료조건
         if (idx == N) {
             int cnt = 0;
