@@ -31,9 +31,7 @@ public class Main {
 				int v1 = vId(st.nextToken());
 				int v2 = vId(st.nextToken());
 				
-				union(v1, v2);
-				
-				sb.append(depth[parent[v1]]).append("\n");
+				sb.append(union(v1, v2)).append("\n");
 			}
 		}
 		
@@ -41,26 +39,25 @@ public class Main {
 	}
 	
 	static int vId(String input) {
-		if (!hashMap.containsKey(input)) {
-			hashMap.put(input, ++idx);
-			
-			return hashMap.get(input);
-		}
-		
-		return hashMap.get(input);
+		Integer id = hashMap.get(input); 
+        if (id == null) {
+            hashMap.put(input, ++idx);
+            return idx;
+        }
+        return id;
 	}
 	
-	static void union(int v1, int v2) {
+	static int union(int v1, int v2) {
 		int v1Root = find(v1);
 		int v2Root = find(v2);
 		
-		if (v1Root == v2Root) return;
+		if (v1Root == v2Root) return depth[v1Root];
 		
 		// depth 추가
 		parent[v2Root] = v1Root;
 		depth[v1Root] += depth[v2Root];
 		
-		
+		return depth[v1Root];
 	}
 	
 	static int find(int v) {
