@@ -5,7 +5,7 @@ public class Main {
     static int V;
     static int E;
     static List<int[]> edgeList;
-    static int[] root;
+    static int[] parent;
 
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,9 +14,9 @@ public class Main {
         V = Integer.parseInt(st.nextToken());
         E = Integer.parseInt(st.nextToken());
 
-        root = new int[V + 1];
+        parent = new int[V + 1];
         for (int i = 1; i <= V; i++) {
-            root[i] = i;
+            parent[i] = i;
         }
 
         edgeList = new ArrayList<>();
@@ -44,14 +44,10 @@ public class Main {
             int v2 = edge[1];
             int cost = edge[2];
 
-            int v1Root = findRoot(v1);
-            int v2Root = findRoot(v2);
-
-            if (v1Root == v2Root) continue;
-
-            root[v1Root] = root[v2Root];
-            sum += cost;
-            cnt++;
+            if (union(v1, v2)) {
+                sum += cost;
+                cnt++;
+            }
 
             if (cnt >= V - 1) break;
         }
@@ -59,9 +55,20 @@ public class Main {
         return sum;
     }
 
-    static int findRoot(int v) {
-        if (root[v] == v) return v;
+    static boolean union(int v1, int v2) {
+        int v1Root = find(v1);
+        int v2Root = find(v2);
 
-        return root[v] = findRoot(root[v]);
+        // 사이클을 만드는 경우
+        if (v1Root == v2Root) return false;
+
+        parent[v2Root] = v1Root;
+        return true;
+    }
+
+    static int find(int v) {
+        if (parent[v] == v) return v;
+
+        return parent[v] = find(parent[v]);
     }
 }
