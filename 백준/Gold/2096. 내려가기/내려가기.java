@@ -5,7 +5,10 @@ public class Main {
     static int N;
     static int[] dpMax;
     static int[] dpMin;
-    static int[][] scores;
+
+    static int s0;
+    static int s1;
+    static int s2;
 
     static int idx_0;
     static int idx_1;
@@ -17,42 +20,39 @@ public class Main {
 
         dpMax = new int[3];
         dpMin = new int[3];
-        scores = new int[N][3];
 
         for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            scores[i][0] = Integer.parseInt(st.nextToken());
-            scores[i][1] = Integer.parseInt(st.nextToken());
-            scores[i][2] = Integer.parseInt(st.nextToken());
-        }
+            s0 = Integer.parseInt(st.nextToken());
+            s1 = Integer.parseInt(st.nextToken());
+            s2 = Integer.parseInt(st.nextToken());
 
-        // 첫째줄 값 초기화
-        dpMax[0] = scores[0][0];
-        dpMax[1] = scores[0][1];
-        dpMax[2] = scores[0][2];
-        dpMin[0] = scores[0][0];
-        dpMin[1] = scores[0][1];
-        dpMin[2] = scores[0][2];
+            if (i == 0) {
+                // 첫째줄 값 초기화
+                dpMax[0] = s0;
+                dpMax[1] = s1;
+                dpMax[2] = s2;
+                dpMin[0] = s0;
+                dpMin[1] = s1;
+                dpMin[2] = s2;
+                continue;
+            }
 
-        for (int i = 1; i < N; i++) {
             idx_0 = dpMax[0];
             idx_1 = dpMax[1];
             idx_2 = dpMax[2];
-            dpMax[0] = Math.max(idx_0, idx_1) + scores[i][0];
-            dpMax[1] = Math.max(idx_0, Math.max(idx_1, idx_2)) + scores[i][1];
-            dpMax[2] = Math.max(idx_1, idx_2) + scores[i][2];
+            dpMax[0] = Math.max(idx_0, idx_1) + s0;
+            dpMax[1] = Math.max(idx_0, Math.max(idx_1, idx_2)) + s1;
+            dpMax[2] = Math.max(idx_1, idx_2) + s2;
 
             idx_0 = dpMin[0];
             idx_1 = dpMin[1];
             idx_2 = dpMin[2];
-            dpMin[0] = Math.min(idx_0, idx_1) + scores[i][0];
-            dpMin[1] = Math.min(idx_0, Math.min(idx_1, idx_2)) + scores[i][1];
-            dpMin[2] = Math.min(idx_1, idx_2) + scores[i][2];
+            dpMin[0] = Math.min(idx_0, idx_1) + s0;
+            dpMin[1] = Math.min(idx_0, Math.min(idx_1, idx_2)) + s1;
+            dpMin[2] = Math.min(idx_1, idx_2) + s2;
         }
 
-        int max = Math.max(dpMax[0], Math.max(dpMax[1], dpMax[2]));
-        int min = Math.min(dpMin[0], Math.min(dpMin[1], dpMin[2]));
-
-        System.out.println(max + " " + min);
+        System.out.println(Math.max(dpMax[0], Math.max(dpMax[1], dpMax[2])) + " " + Math.min(dpMin[0], Math.min(dpMin[1], dpMin[2])));
     }
 }
