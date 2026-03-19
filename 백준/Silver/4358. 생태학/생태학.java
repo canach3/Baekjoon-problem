@@ -8,19 +8,18 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		int[] treeCnt = new int[10000];
-		List<String> treeList = new ArrayList<>();
-		Map<String, Integer> hashMap = new HashMap<>();
+		Map<String, Integer> treeMap = new TreeMap<>();
 		
 		int size = 0;
 		int totalCnt = 0;
 		
-		String tree;
-		while((tree = br.readLine()) != null) {
-			Integer idx = hashMap.get(tree);
+		String treeName;
+		while((treeName = br.readLine()) != null) {
+			Integer idx = treeMap.get(treeName);
 			
 			if (idx == null) {
-				hashMap.put(tree, size++);
-				treeList.add(tree);
+				treeMap.put(treeName, size++);
+				
 				treeCnt[size - 1]++;
 				totalCnt++;
 			} else {
@@ -29,16 +28,16 @@ public class Main {
 			}
 		}
 		
-		Collections.sort(treeList);
 		
-		for (int i = 0; i < treeList.size(); i++) {
-			sb.append(treeList.get(i)).append(" ");
+		for (String tree : treeMap.keySet()) {
+			sb.append(tree).append(" ");
 			
-			int idx = hashMap.get(treeList.get(i));
+			int idx = treeMap.get(tree);
+			double percentage = (double) treeCnt[idx] / totalCnt * 100.0;
 			
-			sb.append(String.format("%.4f", (double) treeCnt[idx] / totalCnt * 100.0)).append("\n");
+			sb.append(String.format("%.4f", percentage)).append("\n");
 		}
-		
+			
 		System.out.print(sb);
 	}
 }
