@@ -2,77 +2,92 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	static int n;
-	static int T;
-	static Map<Integer, List<Integer>> homs; // 홈 정보
-	
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		n = Integer.parseInt(st.nextToken());
-		T = Integer.parseInt(st.nextToken());
-		
-		homs = new HashMap<>();
-		
-		// 0, 0 초기위치 세팅
-		homs.put(0, new ArrayList<>());
-		homs.get(0).add(0);
-		
-		
-		for (int i = 0; i < n; i++) {
-			st = new StringTokenizer(br.readLine());
-			int x = Integer.parseInt(st.nextToken());
-			int y = Integer.parseInt(st.nextToken());
-			
-			if (homs.get(y) == null) {
-				List<Integer> list = new ArrayList<>();
-				list.add(x);
-				homs.put(y, list);
-			} else {
-				homs.get(y).add(x);
-			}
-		}
-		
-		// BFS
-		Deque<int[]> deque = new ArrayDeque<>();
-		deque.addLast(new int[] {0, 0, 0}); // {y, x, cnt} 
-		
-		int result = 0;
-		while(!deque.isEmpty()) {
-			int[] hom = deque.pollFirst();
-			int y = hom[0];
-			int x = hom[1];
-			int cnt = hom[2];
-			
-			if (y == T) {
-				result = cnt;
-				break;
-			}
-			
-			for (int i = y - 2; i <= y + 2; i++) {
-				// 상하 2칸 내에 홈이 존재하는 지 확인
-				if (homs.get(i) == null) continue;
-				
-				List<Integer> xList = homs.get(i);
+    // 홈의 정보를 담을 클래스 (X좌표 및 방문 여부)
+    static class Hole implements Comparable<Hole> {
+        int x;
+        boolean visited;
 
-				for (int j = xList.size() - 1; j >= 0; j--) {
-					int nextY = i;
-					int nextX = xList.get(j);
-					
-					if (Math.abs(x - nextX) <= 2) {
-						deque.addLast(new int[] {nextY, nextX, cnt + 1});
-						
-						// 방문했으면 리스트에서 지우기 (swap 활용)
-						xList.set(j, xList.get(xList.size() - 1));
-						xList.remove(xList.size() - 1);
-					}
-				}
-			}
-		}
-		
-		if (result == 0) result = -1;
-		
-		System.out.println(result);
-	}
+        public Hole(int x) {
+            this.x = x;
+            this.visited = false;
+        }
+
+        @Override
+        public int compareTo(Hole o) {
+            return Integer.compare(this.x, o.x);
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int n = Integer.parseInt(st.nextToken());
+        int T = Integer.parseInt(st.nextToken());
+
+        ArrayList<Hole>[] graph = new ArrayList[200005];
+        for (int i = 0; i <= 200000; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
+            graph[y].add(new Hole(x));
+        }
+
+        for (int i = 0; i <= 200000; i++) {
+            if (!graph[i].isEmpty()) {
+                Collections.sort(graph[i]);
+            }
+        }
+
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[]{0, 0, 0});
+
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int cy = cur[0];
+            int cx = cur[1];
+            int cnt = cur[2];
+
+            if (cy == T) {
+                System.out.println(cnt);
+                return;
+            }
+
+            for (int ny = Math.max(0, cy - 2); ny <= Math.min(200000, cy + 2); ny++) {
+                ArrayList<Hole> row = graph[ny];
+                if (row.isEmpty()) continue;
+
+                int left = 0;
+                int right = row.size() - 1;
+                int startIdx = row.size();
+
+                while (left <= right) {
+                    int mid = (left + right) / 2;
+                    if (row.get(mid).x >= cx - 2) {
+                        startIdx = mid;
+                        right = mid - 1; // 더 왼쪽으로 이동하며 최소 인덱스 찾기
+                    } else {
+                        left = mid + 1;
+                    }
+                }
+
+                for (int i = startIdx; i < row.size(); i++) {
+                    Hole target = row.get(i);
+                    
+                    if (target.x > cx + 2) break;
+
+                    if (!target.visited) {
+                        target.visited = true; // 방문 처리
+                        queue.offer(new int[]{ny, target.x, cnt + 1});
+                    }
+                }
+            }
+        }
+
+        System.out.println(-1);
+    }
 }
