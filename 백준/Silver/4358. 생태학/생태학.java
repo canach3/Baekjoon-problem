@@ -15,20 +15,22 @@ public class Main {
 			
 			if (cnt == null) {
 				treeMap.put(treeName, 1);
-				totalCnt++;
 			} else {
 				treeMap.replace(treeName, cnt + 1);
-				totalCnt++;
 			}
+			
+			totalCnt++;
 		}
 		
 		StringBuilder sb = new StringBuilder();
-		for (String tree : treeMap.keySet()) {
-			sb.append(tree).append(" ");
-			
-			double percentage = (double) treeMap.get(tree) / totalCnt * 100.0;
-			
-			sb.append(String.format("%.4f", percentage)).append("\n");
+		for (Map.Entry<String, Integer> entry : treeMap.entrySet()) {
+		    String tree = entry.getKey();
+		    int count = entry.getValue();
+		    
+		    sb.append(tree).append(" ");
+		    
+		    double percentage = (double) count / totalCnt * 100.0;
+		    sb.append(String.format("%.4f", percentage)).append("\n");
 		}
 			
 		System.out.print(sb);
