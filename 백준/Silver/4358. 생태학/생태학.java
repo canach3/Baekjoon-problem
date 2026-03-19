@@ -11,14 +11,7 @@ public class Main {
 		
 		String treeName;
 		while((treeName = br.readLine()) != null) {
-			Integer cnt = treeMap.get(treeName);
-			
-			if (cnt == null) {
-				treeMap.put(treeName, 1);
-			} else {
-				treeMap.replace(treeName, cnt + 1);
-			}
-			
+			treeMap.put(treeName, treeMap.getOrDefault(treeName, 0) + 1);
 			totalCnt++;
 		}
 		
