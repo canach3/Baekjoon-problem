@@ -10,7 +10,7 @@ public class Main {
 	static int H; // 통과해야되는 정점
 	
 	static List<List<int[]>> adjList;
-	static int[][] dist;	// 거리와 자신의 이전노드를 저장
+	static int[] dist;	// 거리와 자신의 이전노드를 저장
 	static int[] target;	// 목적지 후보 저장
 	
 	public static void main(String[] args) throws IOException {
@@ -31,9 +31,9 @@ public class Main {
 			}
 			
 			// 경로저장 배열 초기화
-			dist = new int[N + 1][2];
+			dist = new int[N + 1];
 			for (int i = 1; i <= N; i++) {
-				dist[i][0] = Integer.MAX_VALUE;
+				dist[i] = Integer.MAX_VALUE;
 			}
 			
 			// 목적지후보 배열 초기화
@@ -64,27 +64,9 @@ public class Main {
 			dijkstra();
 			
 			for (int i = 0; i < T; i++) {
-				int finalDist = dist[target[i]][0];
+				int finalDist = dist[target[i]];
 				if (finalDist % 2 != 0 && finalDist != Integer.MAX_VALUE) sb.append(target[i]).append(" ");
 			}
-			
-//			for (int i = 0; i < T; i++) {
-//				boolean cross = false;
-//				int curr = target[i];
-//				
-//				while (curr != S) {
-//					int prev = dist[curr][1];
-//					
-//					if ((curr == G && prev == H) || (curr == H && prev == G)) {
-//						cross = true;
-//						break;
-//					}
-//					
-//					curr = prev;
-//				}
-//				
-//				if (cross) sb.append(target[i]).append(" ");
-//			}
 			
 			sb.append("\n");
 		}
@@ -94,8 +76,7 @@ public class Main {
 	
 	static void dijkstra() {
 		PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1],  b[1]));
-		dist[S][0] = 0;
-		dist[S][1] = S;
+		dist[S] = 0;
 		pq.add(new int[] {S, 0});
 		
 		while (!pq.isEmpty()) {
@@ -103,16 +84,15 @@ public class Main {
 			int currV = curr[0];
 			int currCost = curr[1];
 			
-			if (currCost > dist[currV][0]) continue;
+			if (currCost > dist[currV]) continue;
 			
 			for (int[] next : adjList.get(currV)) {
 				int nextV = next[0];
 				int nextCost = next[1];
 				int newCost = currCost + nextCost;
 				
-				if (newCost < dist[nextV][0]) {
-					dist[nextV][0] = newCost;
-					dist[nextV][1] = currV;
+				if (newCost < dist[nextV]) {
+					dist[nextV] = newCost;
 					
 					pq.add(new int[] {nextV, newCost});
 				}
