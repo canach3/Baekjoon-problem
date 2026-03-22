@@ -3,7 +3,8 @@ import java.util.*;
 
 public class Main {
     static int N;
-    static List<Map<Integer, Integer>> adjList;
+    static List<List<int[]>> adjList;
+    static int[] parent;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -12,14 +13,9 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        int[][] dist = new int[N + 1][2];
-        for (int i = 2; i <= N; i++) {
-            dist[i][0] = Integer.MAX_VALUE; // 최단거리, 자신의 이전노드 저장
-        }
-
         adjList = new ArrayList<>();
         for (int i = 0; i <= N; i++) {
-            adjList.add(new HashMap<>());
+            adjList.add(new ArrayList<>());
         }
 
         for (int i = 0; i < M; i++) {
@@ -28,68 +24,79 @@ public class Main {
             int v2 = Integer.parseInt(st.nextToken());
             int cost = Integer.parseInt(st.nextToken());
 
-            adjList.get(v1).put(v2, cost);
-            adjList.get(v2).put(v1, cost);
+            adjList.get(v1).add(new int[]{v2, cost});
+            adjList.get(v2).add(new int[]{v1, cost});
         }
 
-        int shortest = dijkstra(dist);
-        int max = -1;
+        parent = new int[N + 1];
 
+        int shortest = dijkstra(0, 0);
+
+        if (shortest == Integer.MAX_VALUE) {
+            System.out.println(-1);
+            return;
+        }
+
+        int maxDelay = -1;
         int curr = N;
+
         while (curr != 1) {
-            int prev = dist[curr][1];
+            int prev = parent[curr];
 
-            int tmp = adjList.get(curr).get(prev);
-            adjList.get(curr).remove(prev);
-            adjList.get(prev).remove(curr);
+            int length = dijkstra(curr, prev);
 
-            int[][] tmpDist = new int[N + 1][2];
-            for (int i = 2; i <= N; i++) {
-                tmpDist[i][0] = Integer.MAX_VALUE;
-            }
-
-            int length = dijkstra(tmpDist);
             if (length == Integer.MAX_VALUE) {
                 System.out.println(-1);
                 return;
             }
 
             int diff = length - shortest;
-            max = Math.max(max, diff);
-
-            adjList.get(curr).put(prev, tmp);
-            adjList.get(prev).put(curr, tmp);
+            maxDelay = Math.max(maxDelay, diff);
 
             curr = prev;
         }
 
-        System.out.println(max);
+        System.out.println(maxDelay);
     }
 
-    static int dijkstra(int[][] dist) {
+    static int dijkstra(int blockU, int blockV) {
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
+
+        int[] dist = new int[N + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+
         pq.add(new int[]{1, 0});
+        dist[1] = 0;
 
         while (!pq.isEmpty()) {
             int[] curr = pq.poll();
             int currV = curr[0];
             int currCost = curr[1];
 
-            if (currV == N) break;
-            if (dist[currV][0] < currCost) continue;
+            if (dist[currV] < currCost) continue;
 
-            for (int nextV : adjList.get(currV).keySet()) {
-                int newCost = currCost + adjList.get(currV).get(nextV);
+            for (int[] next : adjList.get(currV)) {
+                int nextV = next[0];
+                int nextCost = next[1];
 
-                if (newCost < dist[nextV][0]) {
-                    dist[nextV][0] = newCost;
-                    dist[nextV][1] = currV;
+                if ((currV == blockU && nextV == blockV) || (currV == blockV && nextV == blockU)) {
+                    continue;
+                }
+
+                int newCost = currCost + nextCost;
+
+                if (newCost < dist[nextV]) {
+                    dist[nextV] = newCost;
+
+                    if (blockU == 0 && blockV == 0) {
+                        parent[nextV] = currV;
+                    }
 
                     pq.add(new int[]{nextV, newCost});
                 }
             }
         }
 
-        return dist[N][0];
+        return dist[N];
     }
 }
