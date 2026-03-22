@@ -19,9 +19,7 @@ public class Main {
 
         // segment tree 생성, 초기화
         int[] minTree = new int[size];
-        for (int i = 1; i < size; i++) {
-            minTree[i] = 1000000001;
-        }
+        Arrays.fill(minTree, 1000000001);
 
         int[] maxTree = new int[size];
 
@@ -36,7 +34,7 @@ public class Main {
             maxTree[i / 2] = Math.max(maxTree[i / 2], maxTree[i]);
         }
 
-        // 각 트리의 입력받은 구간의 최솟값, 최댓값 구하기        
+        // 각 트리의 입력받은 구간의 최솟값, 최댓값 구하기
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
             int left = (size / 2 - 1) + Integer.parseInt(st.nextToken());
