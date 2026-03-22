@@ -84,9 +84,9 @@ public class Main {
                 if (newCost < dist[nextV][0]) {
                     dist[nextV][0] = newCost;
                     dist[nextV][1] = currV;
-                }
 
-                pq.add(new int[]{nextV, newCost});
+                    pq.add(new int[]{nextV, newCost});
+                }
             }
         }
 
