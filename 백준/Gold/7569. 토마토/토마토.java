@@ -35,18 +35,18 @@ public class Main {
         }
 
         // 처음부터 다 익은 경우
-        if (deque.size() == M * N * H) {
+        if (deque.size() == M * N * H - hole) {
             System.out.println(0);
             return;
         }
 
-        int max = 0;
+        int time = 0;
         while (!deque.isEmpty()) {
             int[] curr = deque.pollFirst();
             int currZ = curr[0];
             int currY = curr[1];
             int currX = curr[2];
-            int time = curr[3];
+            time = curr[3];
 
             for (int i = 0; i < 6; i++) {
                 int nextZ = currZ + dz[i];
@@ -61,8 +61,6 @@ public class Main {
                     deque.add(new int[]{nextZ, nextY, nextX, time + 1});
                 }
             }
-
-            max = Math.max(max, time);
         }
 
         if (ripeCnt != H*N*M - hole) {
@@ -70,6 +68,6 @@ public class Main {
             return;
         }
 
-        System.out.println(max);
+        System.out.println(time);
     }
 }
