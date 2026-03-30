@@ -4,7 +4,6 @@ import java.util.*;
 public class Main {
     static Node[] roots; // 맛 자릿수별 root
 
-
     public static void main(String[] args) throws IOException {
         StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -55,8 +54,6 @@ public class Main {
     }
 
     static int search(int rank) {
-        // 자기보다 낮은 사탕의 개수를 세고 +1 반환
-
         int digit = 1;
         while (rank > roots[digit].cnt) {
             rank -= roots[digit++].cnt;
