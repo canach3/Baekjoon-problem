@@ -38,7 +38,10 @@ public class Main {
         for (int i = 0; i < word.length(); i++) {
             int alphabet = word.charAt(i) - 'a';
 
-            if (current.children[alphabet] == null) current.children[alphabet] = new Node();
+            if (current.children[alphabet] == null) {
+                current.children[alphabet] = new Node();
+                current.childCnt++;
+            }
             current = current.children[alphabet];
         }
 
@@ -52,14 +55,7 @@ public class Main {
         for (int i = 1; i < word.length(); i++) {
             int alphabet = word.charAt(i) - 'a';
 
-            int cnt = 0;
-            for (int j = 0; j < 26; j++) {
-                if (cnt == 2) break;
-                if (current.children[j] != null) cnt++;
-            }
-
-            if (cnt == 2) result++;
-            else if (current.endOfWord) result++;
+            if (current.childCnt >= 2 || current.endOfWord) result++;
 
             current = current.children[alphabet];
         }
@@ -69,6 +65,7 @@ public class Main {
 
     static class Node {
         Node[] children;
+        int childCnt;
         boolean endOfWord;
 
         Node() {
