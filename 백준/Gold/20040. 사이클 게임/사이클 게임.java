@@ -17,17 +17,14 @@ public class Main {
         }
 
         int result = 0;
-        boolean cycle = false;
         for (int i = 1; i <= M; i++) {
             st = new StringTokenizer(br.readLine());
             int v1 = Integer.parseInt(st.nextToken());
             int v2 = Integer.parseInt(st.nextToken());
 
-            if (cycle) continue;
-
             if (union(v1, v2)) {
                 result = i;
-                cycle = true;
+                break;
             }
         }
 
