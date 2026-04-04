@@ -11,15 +11,13 @@ public class Main {
         int N = Integer.parseInt(br.readLine().trim());
 
         size = 1;
-        while (size <= N) {
+        while (size < N) {
             size *= 2;
         }
         size *= 2;
 
         tree = new int[size];
-        for (int i = 1; i < size; i++) {
-            tree[i] = 1000000001;
-        }
+        Arrays.fill(tree, 1000000001);
 
         // 원본 배열 삽입
         int start = size / 2;
