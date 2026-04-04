@@ -11,7 +11,7 @@ public class Main {
 
         // tree 생성
         size = 1;
-        while (size <= N) {
+        while (size < N) {
             size *= 2;
         }
         size *= 2;
@@ -36,12 +36,6 @@ public class Main {
                 tree[i / 2][1] = tree[i][1];
             }
         }
-
-//        System.out.println();
-//        for (int i = 0; i < size; i++) {
-//            System.out.print(Arrays.toString(tree[i]));
-//            System.out.print(" ");
-//        }
 
         int M = Integer.parseInt(br.readLine().trim());
 
