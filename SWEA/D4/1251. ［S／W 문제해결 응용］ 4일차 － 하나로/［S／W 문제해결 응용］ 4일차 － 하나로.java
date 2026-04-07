@@ -3,7 +3,9 @@ import java.util.*;
 
 public class Solution {
     static int N;
-    static int[] parent;
+    static boolean[] visited;
+    static int[][] island;
+    static long[] dist;
 
     public static void main(String[] args) throws IOException{
 //        System.setIn(new FileInputStream("res/input.txt"));
@@ -16,85 +18,61 @@ public class Solution {
 
             N = Integer.parseInt(br.readLine().trim());
 
-            int[] xArr = new int[N + 1];
-            int[] yArr = new int[N + 1];
-
+            island = new int[N + 1][2];
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int i = 1; i <= N; i++) {
-                xArr[i] = Integer.parseInt(st.nextToken());
+                island[i][1] = Integer.parseInt(st.nextToken());
             }
-
             st = new StringTokenizer(br.readLine());
             for (int i = 1; i <= N; i++) {
-                yArr[i] = Integer.parseInt(st.nextToken());
+                island[i][0] = Integer.parseInt(st.nextToken());
             }
 
-            double E = Double.parseDouble(br.readLine().trim());
+            double E = Double.parseDouble(br.readLine());
 
-            List<Edge> edgeList = new ArrayList<>();
-            for (int i = 1; i <= N - 1; i++) {
-                for (int j = i + 1; j <= N; j++) {
-                    double cost = E * Math.abs(Math.pow(Math.abs(xArr[i] - xArr[j]), 2) + Math.pow(Math.abs(yArr[i] - yArr[j]), 2));
-                    edgeList.add(new Edge(i, j, cost));
-                }
-            }
-
-            Collections.sort(edgeList);
-
-            parent = new int[N + 1];
+            dist = new long[N + 1];
             for (int i = 1; i <= N; i++) {
-                parent[i] = i;
+                dist[i] = Long.MAX_VALUE;
             }
+            dist[1] = 0;
 
-            int cnt = 0;
-            double sum = 0;
-            for (Edge edge : edgeList) {
-                if (cnt == N - 1) break;
+            visited = new boolean[N + 1];
 
-                if (union(edge.v1, edge.v2)) {
-                    sum += edge.cost;
-                    cnt++;
+            long totalCost = 0;
+            for (int i = 1; i <= N; i++) {
+                long min = Long.MAX_VALUE;
+                int current = 0;
+
+                // 방문하지 않은 섬 중 가장 가까운 섬 찾기
+                for (int j = 1; j <= N; j++) {
+                    if (!visited[j] && dist[j] < min) {
+                        min = dist[j];
+                        current = j;
+                    }
+                }
+
+                visited[current] = true;
+                totalCost += dist[current];
+
+                for (int next = 1; next <= N; next++) {
+                    if (visited[next]) continue;
+
+                    long newCost = getCost(island[current][0], island[current][1], island[next][0], island[next][1]);
+
+                    dist[next] = Math.min(dist[next], newCost);
                 }
             }
 
-            long result = Math.round(sum);
-
-            sb.append(result).append("\n");
+            sb.append(Math.round(totalCost * E)).append("\n");
         }
 
         System.out.print(sb);
     }
 
-    static boolean union(int v1, int v2) {
-        int v1Root = find(v1);
-        int v2Root = find(v2);
+    static long getCost(int aY, int aX, int bY, int bX) {
+        long y = aY - bY;
+        long x = aX - bX;
 
-        if (v1Root == v2Root) return false;
-
-        parent[v2Root] = v1Root;
-        return true;
-    }
-
-    static int find(int v) {
-        if (parent[v] == v) return v;
-
-        return parent[v] = find(parent[v]);
-    }
-
-    static class Edge implements Comparable<Edge> {
-        int v1;
-        int v2;
-        double cost;
-
-        Edge(int v1, int v2, double cost) {
-            this.v1 = v1;
-            this.v2 = v2;
-            this.cost = cost;
-        }
-
-        @Override
-        public int compareTo(Edge o) {
-            return Double.compare(this.cost, o.cost);
-        }
+        return y*y + x*x;
     }
 }
