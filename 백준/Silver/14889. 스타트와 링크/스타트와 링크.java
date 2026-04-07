@@ -30,27 +30,13 @@ public class Main {
         if (idx == N + 1) return;
 
         if (cnt == N / 2) {
-            int[] teamStart = new int[N  / 2];
-            int[] teamLink = new int[N / 2];
-
-            int idx1 = 0;
-            int idx2 = 0;
-            for (int i = 1; i <= N; i++) {
-                if (isStart[i]) teamStart[idx1++] = i;
-                else teamLink[idx2++] = i;
-            }
-
             int sumStart = 0;
-            for (int i = 0; i < teamStart.length; i++) {
-                for (int j = 0; j < teamStart.length; j++) {
-                    sumStart += map[teamStart[i]][teamStart[j]];
-                }
-            }
-
             int sumLink = 0;
-            for (int i = 0; i < teamLink.length; i++) {
-                for (int j = 0; j < teamLink.length; j++) {
-                    sumLink += map[teamLink[i]][teamLink[j]];
+
+            for (int i = 1; i <= N; i++) {
+                for (int j = 1; j <= N; j++) {
+                    if (isStart[i] && isStart[j]) sumStart += map[i][j];
+                    if (!isStart[i] && !isStart[j]) sumLink += map[i][j];
                 }
             }
 
