@@ -7,32 +7,21 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
 
-        int[] sumArr = new int[N + 1];
+        int[] arr = new int[N];
+        int[] dp = new int[N];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; i++) {
-            sumArr[i] = sumArr[i - 1] + Integer.parseInt(st.nextToken());
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        int left = 0;
-        int right = 1;
-        int max = Integer.MIN_VALUE;
+        dp[0] = arr[0];
+        int max = arr[0];
 
-        while (right <= N) {
-            if (right == left) {
-                right++;
-                continue;
-            }
+        for (int i = 1; i < N; i++) {
+            dp[i] = Math.max(dp[i - 1] + arr[i], arr[i]);
 
-            int sum = sumArr[right] - sumArr[left];
-
-            max = Math.max(max, sum);
-
-            if (sum < 0) {
-                left++;
-            } else {
-                right++;
-            }
+            max = Math.max(max, dp[i]);
         }
 
         System.out.println(max);
