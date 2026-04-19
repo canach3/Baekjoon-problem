@@ -1,8 +1,10 @@
 import java.io.*;
 import java.util.*;
 
-class Solution {
-    public static void main(String[] args) throws IOException {
+public class Solution {
+    public static void main(String[] args) throws IOException{
+//        System.setIn(new FileInputStream("res/input.txt"));
+
         StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -11,20 +13,23 @@ class Solution {
             sb.append("#").append(testCase).append(" ");
 
             int N = Integer.parseInt(br.readLine().trim());
-            int kN = 0;
 
-            Set<Integer> set = new HashSet<>();
-            while (set.size() != 10) {
-                kN += N;
+            int visited = 1 << 10;
+            int standard = (1 << 11) - 1;
+            int KN = 0;
 
-                String tmp = String.valueOf(kN);
+            while ((visited & standard) != standard) {
+                KN += N;
 
-                for (int i = 0; i < tmp.length(); i++) {
-                    set.add(tmp.charAt(i) - '0');
+                String strKN = String.valueOf(KN);
+                for (int i = 0; i < strKN.length(); i++) {
+                    int num = strKN.charAt(i) - '0';
+
+                    visited = (visited | (1 << num));
                 }
             }
 
-            sb.append(kN).append("\n");
+            sb.append(KN).append("\n");
         }
 
         System.out.print(sb);
