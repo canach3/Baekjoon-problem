@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
+    static final int TARGET_MASK = (1 << 10) - 1;
     public static void main(String[] args) throws IOException{
 //        System.setIn(new FileInputStream("res/input.txt"));
 
@@ -14,11 +15,10 @@ public class Solution {
 
             int N = Integer.parseInt(br.readLine().trim());
 
-            int visited = 1 << 10;
-            int standard = (1 << 11) - 1;
+            int visited = 0;
             int KN = 0;
 
-            while ((visited & standard) != standard) {
+            while ((visited & TARGET_MASK) != TARGET_MASK) {
                 KN += N;
                 int tmp = KN;
 
