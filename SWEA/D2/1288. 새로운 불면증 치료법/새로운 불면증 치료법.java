@@ -1,44 +1,32 @@
 import java.io.*;
 import java.util.*;
 
-public class Solution {
-    public static void main(String[] args) throws IOException{
+class Solution {
+    public static void main(String[] args) throws IOException {
+        StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.parseInt(br.readLine());
 
+        int T = Integer.parseInt(br.readLine().trim());
         for (int testCase = 1; testCase <= T; testCase++) {
-            boolean[] visited = new boolean[10];
+            sb.append("#").append(testCase).append(" ");
 
-            int N = Integer.parseInt(br.readLine());
+            int N = Integer.parseInt(br.readLine().trim());
+            int kN = 0;
 
-            int cnt = 1;
-            String result = "";
-            boolean isCompleted = false;
+            Set<Integer> set = new HashSet<>();
+            while (set.size() != 10) {
+                kN += N;
 
-            while(!isCompleted) {
-                result = String.valueOf((N * cnt));
+                String tmp = String.valueOf(kN);
 
-                for (int i = 0; i < result.length(); i++) {
-                    int num = result.charAt(i) - '0';
-
-                    if (!visited[num]) {
-                        visited[num] = true;
-                    }
-                }
-
-                for (int i = 0; i < 10; i++) {
-                    if (!visited[i]) {
-                        cnt++;
-                        break;
-                    }
-
-                    if (i == 9){
-                        isCompleted = true;
-                    }
+                for (int i = 0; i < tmp.length(); i++) {
+                    set.add(tmp.charAt(i) - '0');
                 }
             }
 
-            System.out.println("#" + testCase + " " + result);
+            sb.append(kN).append("\n");
         }
+
+        System.out.print(sb);
     }
 }
