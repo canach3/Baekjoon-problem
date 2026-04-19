@@ -20,10 +20,11 @@ public class Solution {
 
             while ((visited & standard) != standard) {
                 KN += N;
+                int tmp = KN;
 
-                String strKN = String.valueOf(KN);
-                for (int i = 0; i < strKN.length(); i++) {
-                    int num = strKN.charAt(i) - '0';
+                while (tmp > 0) {
+                    int num = tmp % 10;
+                    tmp /= 10;
 
                     visited = (visited | (1 << num));
                 }
