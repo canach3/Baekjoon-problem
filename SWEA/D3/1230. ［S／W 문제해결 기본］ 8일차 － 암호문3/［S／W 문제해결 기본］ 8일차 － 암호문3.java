@@ -2,43 +2,53 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
-    public static void main(String[] args) throws IOException {
+    static int x;
+    static int y;
+
+    public static void main(String[] args) throws IOException{
+//        System.setIn(new FileInputStream("res/input.txt"));
+
         StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         for (int testCase = 1; testCase <= 10; testCase++) {
             sb.append("#").append(testCase).append(" ");
 
-            int N = Integer.parseInt(br.readLine().trim());
-            String input = br.readLine().trim();
-            List<String> list = new LinkedList<>(Arrays.asList(input.split(" ")));
+            int N = Integer.parseInt(br.readLine());
+            List<Integer> list = new LinkedList<>();
 
-            int M = Integer.parseInt(br.readLine().trim());
-            StringTokenizer st = new StringTokenizer(br.readLine().trim());
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int i = 0; i < N; i++) {
+                list.add(Integer.parseInt(st.nextToken()));
+            }
+
+            int M = Integer.parseInt(br.readLine());
+
+            st = new StringTokenizer(br.readLine());
             for (int i = 0; i < M; i++) {
                 char command = st.nextToken().charAt(0);
-                if (command == 'A') {
-                    int cnt = Integer.parseInt(st.nextToken());
 
-                    for (int j = 0; j < cnt; j++) {
-                        String num = st.nextToken();
-                        list.add(num);
-                    }
-                } else if (command == 'I') {
-                    int idx = Integer.parseInt(st.nextToken());
-                    int cnt = Integer.parseInt(st.nextToken());
-
-                    for (int j = 0; j < cnt; j++) {
-                        String num = st.nextToken();
-                        list.add(idx + j, num);
-                    }
-                } else if (command == 'D') {
-                    int idx = Integer.parseInt(st.nextToken());
-                    int cnt = Integer.parseInt(st.nextToken());
-
-                    for (int j = 0; j < cnt; j++) {
-                        list.remove(idx + j);
-                    }
+                switch (command) {
+                    case 'I':
+                        x = Integer.parseInt(st.nextToken());
+                        y = Integer.parseInt(st.nextToken());
+                        for (int j = 0; j < y; j++) {
+                            list.add(j + x, Integer.parseInt(st.nextToken()));
+                        }
+                        break;
+                    case 'D':
+                        x = Integer.parseInt(st.nextToken());
+                        y = Integer.parseInt(st.nextToken());
+                        for (int j = 0; j < y; j++) {
+                            list.remove(x);
+                        }
+                        break;
+                    case 'A':
+                        y = Integer.parseInt(st.nextToken());
+                        for (int j = 0; j < y; j++) {
+                            list.add(Integer.parseInt(st.nextToken()));
+                        }
+                        break;
                 }
             }
 
