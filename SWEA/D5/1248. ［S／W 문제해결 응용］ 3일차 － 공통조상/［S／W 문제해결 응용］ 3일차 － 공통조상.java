@@ -5,7 +5,9 @@ class Solution {
     static int sum;
     static int[][] tree;
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
+//        System.setIn(new FileInputStream("res/input.txt"));
+
         StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine().trim());
@@ -36,7 +38,7 @@ class Solution {
             }
 
             List<Integer> v1Parents = new ArrayList<>();
-            List<Integer> v2Parents = new ArrayList<>();
+            Set<Integer> v2Parents = new HashSet<>();
 
             while (tree[v1][2] != 1) {
                 v1Parents.add(tree[v1][2]);
@@ -59,7 +61,7 @@ class Solution {
             sum = 0;
             DFS(commonParent);
 
-            sb.append(commonParent).append(" ").append(sum).append(" ").append("\n");
+            sb.append(commonParent).append(" ").append(sum).append("\n");
         }
 
         System.out.print(sb);
