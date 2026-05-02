@@ -1,38 +1,44 @@
 import java.io.*;
 import java.util.*;
 
-class Solution {
-    static StringBuilder sb = new StringBuilder();
+public class Solution {
+    static StringBuilder sb;
+    static int N;
     static char[] tree;
-    static int size;
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws  IOException{
+//        System.setIn(new FileInputStream("res/input.txt"));
+
+        sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         for (int testCase = 1; testCase <= 10; testCase++) {
             sb.append("#").append(testCase).append(" ");
 
-            int N = Integer.parseInt(br.readLine().trim());
-            for (size = 2; size <= N + 1; size *= 2);
-            tree = new char[size + 1];
+            N = Integer.parseInt(br.readLine().trim());
 
-            for (int i = 0; i < N; i++) {
+            tree = new char[N + 1];
+            for (int i = 1; i <= N; i++) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
-                tree[Integer.parseInt(st.nextToken())] = st.nextToken().charAt(0);
+                st.nextToken();
+
+                char c = st.nextToken().charAt(0);
+                tree[i] = c;
             }
 
-            inOrder(1);
+            inorder(1);
+
             sb.append("\n");
         }
 
         System.out.print(sb);
     }
 
-    static void inOrder(int v) {
-        if (v > size || tree[v] == '\u0000') return;
+    static void inorder(int current) {
+        if (current > N || tree[current] == '\u0000') return;
 
-        inOrder(v * 2);
-        sb.append(tree[v]);
-        inOrder(v * 2 + 1);
+        inorder(current * 2);
+        sb.append(tree[current]);
+        inorder(current * 2 + 1);
     }
 }
